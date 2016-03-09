@@ -1,25 +1,26 @@
 extends layout
 
 block content
-	.page-header
-		h1 Category: Humor
-	.row
-		each comic, i in comics
-			if comic.comicCategory == "Humor"
-				.col-md-4.col-sm-6.col-xs-12
-					.panel.panel-default
-						.panel-heading <a href="#{comic.comicSource}">#{comic.comicTitle}</a>
-						.panel-body <a href="#{comic.comicSource}"><img width="25%" height="25%" src="#{comic.panels[1].source}"></img></a>
+	each category, i in comics.comicCategory
+		.page-header
+			h1 #{category}
+		.row
+			each comic, i in comics
+				if comic.comicCategory == #{category}
+					.col-md-4.col-sm-6.col-xs-12
+						.panel.panel-default
+							.panel-heading <a href="#{comic.comicSource}">#{comic.comicTitle}</a>
+							.panel-body <a href="#{comic.comicSource}"><img width="25%" height="25%" src="#{comic.panels[1].source}"></img></a>
 
-	.page-header
-		h1 Category: Fantasy
-	.row
-		each comic, i in comics
-			if comic.comicCategory == "Fantasy"
-				.col-md-4.col-sm-6.col-xs-12
-					.panel.panel-default
-						.panel-heading <a href="#{comic.comicSource}">#{comic.comicTitle}</a>
-						.panel-body <a href="#{comic.comicSource}"><img width="25%" height="25%" src="#{comic.panels[1].source}"></img></a>
+		.page-header
+			h1 Fantasy
+		.row
+			each comic, i in comics
+				if comic.comicCategory == "Fantasy"
+					.col-md-4.col-sm-6.col-xs-12
+						.panel.panel-default
+							.panel-heading <a href="#{comic.comicSource}">#{comic.comicTitle}</a>
+							.panel-body <a href="#{comic.comicSource}"><img width="25%" height="25%" src="#{comic.panels[1].source}"></img></a>
 
 	script( src='//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js' )
 	script( src='//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js' )
