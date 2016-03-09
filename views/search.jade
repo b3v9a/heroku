@@ -8,6 +8,16 @@ block content
 					.panel-heading heading
 					.panel-body
 						form( method="post", action="/search")
+							.checkbox.text-center
+							label
+							input(type='radio', value='Humor', checked)
+							|     Humor  
+							br
+							label
+							input(type='radio', value='Fantasy')
+							|     Fantasy  
+							input(type='text', name='string')
+							button(class='btn btn-lg btn-primary btn-block', type='submit') Register
 							input(type="text", name="string")
 							input(type="submit", value="Search!")
 
