@@ -1,19 +1,25 @@
 html
   head
-    title= title
+    //TODO: make titles dynamic
+    //title= title
+
     link(rel='stylesheet', href='/bootstrap/css/bootstrap.min.css')
     link(rel='stylesheet', href='/bootstrap/css/bootstrap-responsive.min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
-    meta(charset='utf-8')
-    meta(name='viewport', content='width=device-width, initial-scale=1')
     link(rel='stylesheet', href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css')
-    script(src='https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js')
-    script(src='/bootstrap/js/bootstrap.min.js')
+
+    //TODO: which format to keep?
+    //script(src='https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js')
+    //script(src='/bootstrap/js/bootstrap.min.js')
+    script( src='//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js' )
+    script( src='//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js' )
+
     //- Bootstrap stuff
     meta( charset='utf-8' )
     meta( http-equiv='X-UA-Compatible', content='IE=edge' )
     meta( name='viewport', content='width=device-width, initial-scale=1.0' )
     meta( name='description', content='Baking Bootstrap Snippets with Jade' )
+
     //- Bootswatch Theme
     link(href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.0/flatly/bootstrap.min.css", rel="stylesheet")
 
@@ -27,7 +33,7 @@ html
             span.icon-bar
             span.icon-bar
             span.icon-bar
-          a.navbar-brand(href="#") SLOTH COMICS
+          a.navbar-brand(href="/") SLOTH COMICS
 
         #navbar-inverse.collapse.navbar-collapse
           ul.nav.navbar-nav.navbar-left
@@ -36,10 +42,11 @@ html
             li: a( href="/edit") Edit
             li: a( href="/account") Account
           ul.nav.navbar-nav.navbar-right
-            form#formLogin(name="login",method="post",action="/login")
+            form#formLogin(name="login", method="post", action="/login")
               .form-group.col-sm-5
-                  input(type='text', name='username' class='form-control', placeholder='Username',required, autofocus)
+                  input(type='text', name='username' class='form-control', placeholder='username', required, autofocus)
               .form-group.col-sm-5
-                  input(type='password', name='password' class='form-control', placeholder='Password', required)
-                button(class='btn btn-md btn-primary', type='submit') Sign in
+                  input(type='password', name='password' class='form-control', placeholder='password', required)
+                button(class='btn btn-md btn-primary', type='submit') login
+
     block content
