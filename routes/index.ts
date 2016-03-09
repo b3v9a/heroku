@@ -294,6 +294,16 @@ class Router {
             });
         });
 
+        /* GET Search Page */
+        router.get('/search', function(req, res){
+            var collection = db.get('comiccollection');
+            collection.find({}, {},  function(e, docs){
+                res.render('search',{
+                    "comics" : docs
+                });
+            });
+        });    
+
 
         /* GET edit page */
         //router.get('/edit', function (req, res) {
