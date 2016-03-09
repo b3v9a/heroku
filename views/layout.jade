@@ -32,16 +32,9 @@ html
         #navbar-inverse.collapse.navbar-collapse
           ul.nav.navbar-nav.navbar-left
             li.active: a( href="/home") Home
-            li: a( href="#search" ) Search
-            li.dropdown
-              a.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-expanded="false" ) Account
-                span.caret
-              ul.dropdown-menu( role="menu" )
-                li: a( href="#" ) Upload
-                //li: a(href='/edit', class='new-account') Edit
-                li.divider
-                li: a(href='/pref', class='new-account') Preferences
-                li: a(href='/signout', class='new-account') Logout
+            li: a( href="/search") Search
+            li: a( href="/edit") Edit
+            li: a( href="/account") Account
           ul.nav.navbar-nav.navbar-right
             form#formLogin(name="login",method="post",action="/login")
               .form-group.col-sm-5
