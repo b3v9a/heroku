@@ -4,11 +4,13 @@ block content
     .container
       .row
         .col-md-3
-          a.thumbnail(href='http://i.imgur.com/EZMrgDu.png')
-            img(src='http://i.imgur.com/EZMrgDu.png')
-        .col-md-3
-          a.thumbnail(href='http://i.imgur.com/wM0iFb1.png')
-            img(src='http://i.imgur.com/wM0iFb1.png')
+          each comic, i in comics
+            if comic._id == comidID
+              .col-md-4.col-sm-6.col-xs-12
+                .panel.panel-default
+                  .panel-heading <a href="#{comic.comicSource}">#{comic.comicTitle}</a>
+                  .panel-body <a href="#{comic.comicSource}"><img height="25%" src="#{comic.panels[0].source}"></img></a>
+
 
       .row
         .col-md-3

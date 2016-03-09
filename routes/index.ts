@@ -294,6 +294,18 @@ class Router {
             });
         });
 
+        /* GET View Page */
+        router.get('/view/:id', function(req, res){
+            var comicID = req.params.id;
+            var collection = db.get('comiccollection');
+            collection.find({}, {},  function(e, docs){
+                res.render('view',{
+                    "comicID" : comicID,
+                    "comics" : docs
+                });
+            });
+        });
+
         /* GET Search Page */
         router.get('/search', function(req, res){
             var collection = db.get('comiccollection');
