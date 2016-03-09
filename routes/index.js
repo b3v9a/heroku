@@ -17,7 +17,7 @@ var Router = (function () {
         var db = monk('localhost:27017/Sloth');
         db = monk('mongodb://admin:sloth@ds051635.mongolab.com:51635/sloth310');
         /* GET Index page. */
-        router.get('/index', function (req, res) {
+        router.get('/', function (req, res) {
             var collection = db.get('comiccollection');
             collection.find({}, {}, function (e, docs) {
                 res.render('index', {
