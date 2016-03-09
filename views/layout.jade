@@ -37,16 +37,16 @@ html
 
         #navbar-inverse.collapse.navbar-collapse
           ul.nav.navbar-nav.navbar-left
-            li.active: a( href="/home") Home
             li: a( href="/search") Search
             li: a( href="/comics/:id/view/all") Edit
             li: a( href="/account") Account
           ul.nav.navbar-nav.navbar-right
             form#formLogin(name="login", method="post", action="/login")
-              .form-group.col-sm-5
-                  input(type='text', name='username' class='form-control', placeholder='username', required, autofocus)
-              .form-group.col-sm-5
-                  input(type='password', name='password' class='form-control', placeholder='password', required)
-                button(class='btn btn-md btn-primary', type='submit') login
+              .form-group.col-sm-3
+                input(type='text', name='username' class='form-control', placeholder='username', required, autofocus)
+              .form-group.col-sm-3
+                input(type='password', name='password' class='form-control', placeholder='password', required)
+              .form-group.col-sm-3
+                button(class='btn btn-md btn-primary', type='submit') Login
 
     block content
