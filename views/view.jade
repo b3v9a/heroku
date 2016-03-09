@@ -10,3 +10,10 @@ block content
                 .panel.panel-default
                   .panel-heading <a href="#{comic.comicSource}">#{comic.comicTitle}</a>
                   .panel-body <a href="#{comic.comicSource}"><img src="#{comic.panels[0].source}"></img></a>
+
+          .row
+              .col-md-3
+                  each comic, i in comics
+                      if comic._id == comicID
+                          each panel, i in comic.panels
+                              #{comic.panels[panel].source}
