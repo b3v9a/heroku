@@ -1,20 +1,11 @@
 extends layout
 
 block content
-	.container
-		.row
-			.col-md-4.col-sm-6.col-xs-12
-				.panel.panel-default
-					.panel-heading Search for stuff
-					.panel-body
-						form( method="post", action="/comics/:id/edit/addpanel")
-							.checkbox.text-center
-							label
-							input(type='checkbox', value='Humor')
-							|     Humor
-							checkbox.text-center
-							label
-							input(type='checkbox', value='Fantasy')
-							|     Fantasy
-							input(type="url", name="_id", placeholder='Insert URL')
-							input(type="submit", value="Update Panel")
+	.row
+		.col-md-4.col-sm-6.col-xs-12
+			.panel.panel-default
+				.panel-heading Search for stuff
+				.panel-body
+					form( method="post", action="/comics/:id/edit/addpanel")
+						input(type="url", name="_id", placeholder='Insert URL')
+						input(type="submit", value="Update Panel")
