@@ -5,21 +5,11 @@ block content
 		h1 comics about animals
 	.row
 		each comic, i in comics
-			if comic.category == "Animals"
+			if comic.comicCategory == "Humor"
 				.col-md-4.col-sm-6.col-xs-12
 					.panel.panel-default
-						.panel-heading <a href="/view">#{comic.title}</a>
-						.panel-body <a href="#{comic.image}"><img src="#{comic.thumb}"></img></a>
-
-	.page-header
-		h1 comics by cuek.co
-	.row
-		each comic, i in comics
-			if comic.category == "CUEK.co"
-				.col-md-4.col-sm-6.col-xs-12
-					.panel.panel-default
-						.panel-heading <a href="#{comic.image}">#{comic.title}</a>
-						.panel-body <a href="#{comic.image}"><img src="#{comic.thumb}"></img></a>
+						.panel-heading <a href="/view">#{comic.comicTitle}</a>
+						.panel-body <a href="#{comic.comicSource}"><img src="#{comic.panels.[1]}"></img></a>
 
 	script( src='//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js' )
 	script( src='//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js' )

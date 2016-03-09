@@ -153,9 +153,19 @@ var Router = (function () {
         });
         /* GET Home Page */
         router.get('/home', function (req, res) {
-            var collection = db.get('comics');
+            var collection = db.get('comiccollection');
             collection.find({}, {}, function (e, docs) {
                 res.render('home', {
+                    "comics": docs
+                });
+            });
+        });
+
+        /* TEST PAGE IS NOW THE OLD HOME PAGE DELETE THIS LATER */
+        router.get('/test', function (req, res) {
+            var collection = db.get('comics');
+            collection.find({}, {}, function (e, docs) {
+                res.render('test', {
                     "comics": docs
                 });
             });
