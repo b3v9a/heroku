@@ -41,4 +41,5 @@ var Comic = (function () {
         return this.panels;
     };
     return Comic;
-}());
+})();
+//# sourceMappingURL=Comic.js.map

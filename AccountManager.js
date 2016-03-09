@@ -102,7 +102,8 @@ var AccountManager = (function () {
         });
     };
     return AccountManager;
-}());
+})();
 var accountManager = new AccountManager();
 accountManager.start();
 module.exports = accountManager;
+//# sourceMappingURL=AccountManager.js.map
