@@ -2,13 +2,14 @@ extends layout
 
 block content
 	.page-header
-		h1 comics about animals
+		h1 Category: Humor
 	.row
 		each comic, i in comics
 			if comic.comicCategory == "Humor"
 				.col-md-4.col-sm-6.col-xs-12
 					.panel.panel-default
 						.panel-heading <a href="/view">#{comic.comicTitle}</a>
+						.panel-body #{comic.description}"
 
 	script( src='//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js' )
 	script( src='//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js' )
