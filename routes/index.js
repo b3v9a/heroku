@@ -16,7 +16,7 @@ var Router = (function () {
         var monk = require('monk');
         var db = monk('localhost:27017/Sloth');
         db = monk('mongodb://admin:sloth@ds051635.mongolab.com:51635/sloth310');
-        /* GET home page. */
+        /* GET Index page. */
         router.get('/', function (req, res) {
             res.render('index', { title: 'Comic Application' });
         });
@@ -246,10 +246,10 @@ var Router = (function () {
         });
         /* GET Home Page */
         router.get('/home', function (req, res) {
-            var collection = db.get('usercollection');
+            var collection = db.get('comiccollection');
             collection.find({}, {}, function (e, docs) {
                 res.render('home', {
-                    user: docs
+                    "comics": docs
                 });
             });
         });
