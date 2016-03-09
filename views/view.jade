@@ -5,3 +5,16 @@ block content
         if comic._id == comicID
             each panel in comic.panels
                 <br><img src="#{panel.source}"></img>
+
+
+      .row		
+        h1 Comments!
+
+      .row
+        form#formAddComment(name="addcomment",method="post",action="/addcomment")
+          input#inputcomment(type="text", placeholder="comment", name="comment", style='width:400px')
+          button#btnSubmit(type="submit") submit
+        br
+      ul
+        each co, i in comment
+          li= co.comment                
