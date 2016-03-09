@@ -8,4 +8,5 @@ var UserComment = (function () {
         this.date = date;
     }
     return UserComment;
-}());
+})();
+//# sourceMappingURL=UserComment.js.map

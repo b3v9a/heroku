@@ -261,7 +261,7 @@ var Router = (function () {
                     "comics": docs
                 });
             });
-        });        
+        });
         /* GET edit page */
         //router.get('/edit', function (req, res) {
         //    res.render('edit', {});
@@ -273,6 +273,7 @@ var Router = (function () {
         module.exports = router;
     };
     return Router;
-}());
+})();
 var router = new Router();
 router.start();
+//# sourceMappingURL=index.js.map

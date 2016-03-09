@@ -272,7 +272,8 @@ var ComicEditor = (function () {
         });
     };
     return ComicEditor;
-}());
+})();
 var editor = new ComicEditor();
 editor.start();
 module.exports = editor;
+//# sourceMappingURL=ComicEditor.js.map
