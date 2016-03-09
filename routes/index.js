@@ -26,7 +26,7 @@ var Router = (function () {
             var collection = db.get('comiccollection');
             collection.find({ "_id": comic }, {}, function (e, docs) {
                 res.render('view', {
-                    "comic": docs
+                    "comics": docs
                 });
             });
         });
