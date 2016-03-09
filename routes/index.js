@@ -156,10 +156,11 @@ var Router = (function () {
             var collection = db.get('comics');
             collection.find({}, {}, function (e, docs) {
                 res.render('home', {
-                    user: docs
+                    "comics": docs
                 });
             });
         });
+
         /* GET edit page */
         router.get('/edit', function (req, res) {
             res.render('edit', {});
