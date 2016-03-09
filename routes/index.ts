@@ -17,10 +17,9 @@ class Router {
         var accountManager = require('../AccountManager');
         var viewer = require('../ComicViewer');
 
-
         var mongo = require('mongodb');
         var monk = require('monk');
-        var db = monk('localhost:27017/Sloth');
+        //var db = monk('localhost:27017/Sloth');
         db = monk('mongodb://admin:sloth@ds051635.mongolab.com:51635/sloth310');
 
         /* GET Index page. */
