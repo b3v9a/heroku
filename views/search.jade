@@ -6,7 +6,7 @@ block content
 			div.col-sm-6.col-md-4.col-md-offset-4
 				h1.text-center.login-title Search for Comics
 					div.signup-wall
-						form#formSearch(name="search",method="post",action="/search")
+						form(name="search",method="post",action="/search")
 							input(type='radio', value='Humor', checked) Humor
 							input(type='radio', value='Fantasy') Fantasy
 							input(type="text", name="string") search terms
