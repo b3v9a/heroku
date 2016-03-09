@@ -1,9 +1,7 @@
 extends layout
 
 block content
-    .row
-        .col-md-3
-            each comic, i in comics
-                if comic._id == comicID
-                    each panel in comic.panels
-                        <img src="#{panel.source}"></img>
+    each comic, i in comics
+        if comic._id == comicID
+            each panel in comic.panels
+                <img src="#{panel.source}"></img>
