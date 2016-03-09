@@ -9,13 +9,7 @@ block content
 					.panel-body
 						form( method="post", action="/search")
 							h1 Categories
-							.checkbox.text-center
-							label
-							input(type='radio', value='Humor', checked)
-							|     Humor
-							label
-							input(type='radio', value='Fantasy')
-							|     Fantasy
+
 							h1 Search terms
 							input(type="text", name="string")
 							input(type="submit", value="Search!")
@@ -27,7 +21,13 @@ block content
 					div.signup-wall
 						form#formSignup(name="signup",method="post",action="/signup")
 							input(type='text', name='username', class='form-control', placeholder='username',required, autofocus)
+							.checkbox.text-center
+							label
 							input(type='radio', value='Humor', checked)
+							|     Humor
+							label
+							input(type='radio', value='Fantasy')
+							|     Fantasy
 							input(type='password', name='password', class='form-control', placeholder='userPassword',required, autofocus)
 							input(type='text', name='firstname', class='form-control', placeholder='firstname',required, autofocus)
 							input(type='text', name='email', class='form-control', placeholder='email',required, autofocus)
