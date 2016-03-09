@@ -8,5 +8,4 @@ var Rating = (function () {
         this.date = date;
     }
     return Rating;
-})();
-//# sourceMappingURL=Rating.js.map
+}());

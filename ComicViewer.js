@@ -73,8 +73,7 @@ var ComicViewer = (function () {
         //});
     };
     return ComicViewer;
-})();
+}());
 var viewer = new ComicViewer();
 viewer.start();
 module.exports = viewer;
-//# sourceMappingURL=ComicViewer.js.map

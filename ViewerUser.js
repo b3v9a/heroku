@@ -21,5 +21,4 @@ var ViewerUser = (function () {
         return this.password;
     };
     return ViewerUser;
-})();
-//# sourceMappingURL=ViewerUser.js.map
+}());
