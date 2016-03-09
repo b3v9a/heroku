@@ -1,10 +1,11 @@
 extends layout
 
 block content
-    .container
-          .row
-              .col-md-3
-                  each comic, i in comics
-                      if comic._id == comicID
-                          each panel in comic.panels
-                          <img src="#{panel.source}"></img>
+    .row
+        .col-md-3
+            each comic, i in comics
+                if comic._id == comicID
+                    each panel in comic.panels
+                        .col-md-4.col-sm-6.col-xs-12
+                            .panel.panel-default
+                                .panel-body <img src="#{panel.source}"></img>
