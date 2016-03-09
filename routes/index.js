@@ -212,7 +212,7 @@ var Router = (function () {
         });
         /* GET Registration Page */
         router.get('/signup', function (req, res) {
-            res.render('/register', {});
+            res.render('register', {});
         });
         /* Handle Registration POST
         * @param username - the username for the account to be created

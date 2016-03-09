@@ -249,7 +249,7 @@ class Router {
 
         /* GET Registration Page */
         router.get('/signup', function(req, res){
-            res.render('/register',{});
+            res.render('register',{});
         });
 
         /* Handle Registration POST
