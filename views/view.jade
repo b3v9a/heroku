@@ -11,24 +11,4 @@ block content
                   .panel-heading <a href="#{comic.comicSource}">#{comic.comicTitle}</a>
                   .panel-body <a href="#{comic.comicSource}"><img height="25%" src="#{comic.panels[0].source}"></img></a>
 
-
-      .row
-        .col-md-3
-          a.thumbnail(href='http://i.imgur.com/8M75zqb.png')
-            img(src='http://i.imgur.com/8M75zqb.png')
-        .col-md-3
-          a.thumbnail(href='http://i.imgur.com/o3FDFbi.png')
-            img(src='http://i.imgur.com/o3FDFbi.png')
-
-      .row		
-        h1 Comments!
-
-      .row
-        form#formAddComment(name="addcomment",method="post",action="/addcomment")
-          input#inputcomment(type="text", placeholder="comment", name="comment", style='width:400px')
-          button#btnSubmit(type="submit") submit
-        br
-      ul
-        each co, i in comment
-          li= co.comment
           
