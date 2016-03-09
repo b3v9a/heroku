@@ -1,21 +1,14 @@
 extends layout
 
 block content
-	.container
-		.row
-			.col-md-4.col-sm-6.col-xs-12
-				.panel.panel-default
-					.panel-heading Search for comics
-					.panel-body
-						form( method="post", action="/search")
-							h1 Categories
-							.checkbox.text-center
-							label
-							input(type='radio', value='Humor', checked)
-							|     Humor
-							label
-							input(type='radio', value='Fantasy')
-							|     Fantasy
-							h1 Search terms
-							input(type="text", name="string")
-							input(type="submit", value="Search!")
+	div.container
+		div.row
+			div.col-sm-6.col-md-4.col-md-offset-4
+				h1.text-center.login-title Search for Comics
+					div.signup-wall
+						form#formSearch(name="search",method="post",action="/search")
+							input(type='radio', value='Humor', checked) Humor
+							input(type='radio', value='Fantasy') Fantasy
+							input(type="text", name="string") search terms
+							button(class='btn btn-lg btn-primary btn-block', type='submit') Search!
+							span.clearfix
