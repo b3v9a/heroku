@@ -15,5 +15,5 @@ block content
               .col-md-3
                   each comic, i in comics
                       if comic._id == comicID
-                          each panel, i in comic.panels
-                              #{[panel].source}
+                          each panel in comic.panels
+                              #{panel.source}
