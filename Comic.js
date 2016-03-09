@@ -1,11 +1,17 @@
 /// <reference path='types/DefinitelyTyped/node/node.d.ts' />
 /// <reference path='types/DefinitelyTyped/express/express.d.ts' />
 /// <reference path='Panel.ts' />
+/// <reference path='UserComment.ts' />
+/// <reference path='Rating.ts' />
 var Comic = (function () {
-    function Comic(title, category, panels) {
+    function Comic(id, title, category, description, panels, comments, ratings) {
+        this._id = id;
         this.title = title;
         this.category = category;
+        this.description = description;
         this.panels = panels;
+        this.comments = comments;
+        this.ratings = ratings;
     }
     // deletes the specified panel from the list of panels
     Comic.prototype.deletePanel = function (pos) {
@@ -35,5 +41,4 @@ var Comic = (function () {
         return this.panels;
     };
     return Comic;
-})();
-//# sourceMappingURL=Comic.js.map
+}());

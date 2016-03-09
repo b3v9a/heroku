@@ -40,15 +40,15 @@ class AccountManager{
     /* Handle Registration POST */
     createAccount(req, res) {
 
-        var userName = req.body.username;
+        var username = req.body.username;
         var userPassword = this.createHash(req.body.password);
         var firstname = req.body.firstname;
         var email = req.body.email;
-        var user = this.vieweruser.constructor(firstname, userName, email, userPassword);
+        //var user = this.vieweruser.constructor(firstname, userName, email, userPassword);
 
         var doesUserExist;
 
-        globalCollection.find({"username": user.getUsername()}, {}, function (e, docs) {
+        globalCollection.find({"username": username}, {}, function (e, docs) {
             if(e){
                 res.send("find error");
             } else {
@@ -57,14 +57,9 @@ class AccountManager{
                 if (doesUserExist) {
                     res.send("User Already Exists");
                 } else {
-                    //this.userCollection.insert({
-                    //    "username": user.getUsername(),
-                    //    "userPassword": user.getPassword(),
-                    //    "firstname" : user.getFirstname(),
-                    //    "email" : user.getEmail()
 
                     globalCollection.insert({
-                        "username": userName,
+                        "username": username,
                         "userPassword": userPassword,
                         "firstname": firstname,
                         "email": email
@@ -84,7 +79,7 @@ class AccountManager{
 
     getAccount(req, res) {
         var currentUser = req.username;
-
+        console.log(currentUser);
         globalCollection.findOne( {"username": currentUser}, {}, function (err, user) {
             if (err) {
                 return res.send("There was an error processing your request, please try again")

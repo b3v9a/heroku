@@ -17,7 +17,7 @@ var ComicViewer = (function () {
         //this.dbmanager = require('./DBManager');
     };
     ComicViewer.prototype.getComic = function (req, res) {
-        var comicId = req.param('_id');
+        var comicId = req.param.comicId;
         globalCollection.findOne({ _id: comicId }, {}, function (err, comic) {
             if (err) {
                 res.send(err);
@@ -54,13 +54,14 @@ var ComicViewer = (function () {
     };
     ComicViewer.prototype.getPanels = function (req, res) {
         // find all panels in a given comic
-        var comicId = req.param('_id');
-        globalCollection.find({ _id: comicId }, {}, function (err, comic) {
+        var comicId = req._id;
+        globalCollection.find({ "_id": comicId }, {}, function (err, comic) {
             if (err) {
                 res.send(err);
             }
             else {
-                res(null, comic.panels);
+                //console.log(req.panels);
+                res(null, req.panels);
             }
         });
         //this.dbmanager.getComic({_id: comicId}, function(err, comic) {
@@ -72,8 +73,7 @@ var ComicViewer = (function () {
         //});
     };
     return ComicViewer;
-})();
+}());
 var viewer = new ComicViewer();
 viewer.start();
 module.exports = viewer;
-//# sourceMappingURL=ComicViewer.js.map

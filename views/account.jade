@@ -1,1 +1,19 @@
-// TODO.
+extends layout
+
+block content
+	body(style='background-color:lightgrey;')
+		div.container
+			div.row
+				div.col-sm-6.col-md-4.col-md-offset-4
+					h1.text-center #{account.firstname}'s Account Details
+						form(name="updateUser",method="post",action="/")
+							small Username:
+							br
+							input(type='text', name='username', class='form-control', placeholder='#{account.username}',required, autofocus)
+							small First name:
+							br
+							input(type='text', name='username', class='form-control', placeholder='#{account.firstname}',required, autofocus)
+							small Email:
+							br
+							input(type='text', name='username', class='form-control', placeholder='#{account.email}',required, autofocus)
+							button(class='btn btn-lg btn-primary btn-block', type='submit') Update All Info

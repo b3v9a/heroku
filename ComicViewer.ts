@@ -22,7 +22,7 @@ class ComicViewer {
     }
 
     getComic(req, res) {
-        var comicId = req.param('_id');
+        var comicId = req.param.comicId;
 
         globalCollection.findOne({_id: comicId}, {}, function(err, comic) {
             if (err) {
@@ -63,13 +63,15 @@ class ComicViewer {
 
     getPanels(req, res) {
         // find all panels in a given comic
-        var comicId = req.param('_id');
+        var comicId = req._id;
 
-        globalCollection.find({_id: comicId}, {}, function(err, comic) {
+        globalCollection.find({"_id": comicId}, {}, function(err, comic) {
             if (err) {
                 res.send(err)
             } else {
-                res(null, comic.panels)
+
+                //console.log(req.panels);
+                res(null, req.panels)
             }
         });
 

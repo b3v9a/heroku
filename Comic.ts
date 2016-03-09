@@ -1,6 +1,8 @@
 /// <reference path='types/DefinitelyTyped/node/node.d.ts' />
 /// <reference path='types/DefinitelyTyped/express/express.d.ts' />
 /// <reference path='Panel.ts' />
+/// <reference path='UserComment.ts' />
+/// <reference path='Rating.ts' />
 
 class Comic {
 
@@ -10,12 +12,20 @@ class Comic {
     _id: number;
     title: string;
     category: string;
+    description: string;
     panels: Panel[];
+    comments: UserComment[];
+    ratings: Rating[];
 
-    constructor(title: string, category: string, panels: Panel[]) {
+    constructor(id: number, title: string, category: string, description: string,
+                panels: Panel[], comments: UserComment[], ratings: Rating[]) {
+        this._id = id;
         this.title = title;
         this.category = category;
+        this.description = description;
         this.panels = panels;
+        this.comments = comments;
+        this.ratings = ratings;
     }
 
     // deletes the specified panel from the list of panels
