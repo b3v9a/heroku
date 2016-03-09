@@ -20,6 +20,16 @@ var Router = (function () {
         router.get('/', function (req, res) {
             res.render('index', { title: 'Comic Application' });
         });
+        /* GET View page. */
+        router.get('/view/:id/', function (req, res) {
+            var comic = req.params.id;
+            var collection = db.get('comiccollection');
+            collection.find({ "_id": comic }, {}, function (e, docs) {
+                res.render('view', {
+                    "comic": docs
+                });
+            });
+        });
         /* POST to Add Comic
          * @param comicTitle - the title of the comic to be created
          * @param comicDescription - the description of the comic to be created
