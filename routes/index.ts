@@ -17,25 +17,15 @@ class Router {
         var accountManager = require('../AccountManager');
         var viewer = require('../ComicViewer');
 
+
         var mongo = require('mongodb');
         var monk = require('monk');
-        //var db = monk('localhost:27017/Sloth');
-        var db = monk('mongodb://admin:sloth@ds051635.mongolab.com:51635/sloth310');
+        var db = monk('localhost:27017/Sloth');
+        db = monk('mongodb://admin:sloth@ds051635.mongolab.com:51635/sloth310');
 
         /* GET Index page. */
         router.get('/', function (req, res) {
             res.render('index', {title: 'Comic Application'});
-        });
-
-        /* GET View page. */
-        router.get('/view/:id/', function (req, res) {
-            var comic  = req.params.id;
-            var collection = db.get('comiccollection');
-            collection.find({"_id": comic}, {},  function(e, docs){
-                res.render('view',{
-                    "comics" : docs;
-                });
-            });
         });
 
         /* POST to Add Comic
@@ -107,7 +97,7 @@ class Router {
                 ]
             };
 
-            editor.addPanel(pid, res);
+            editor.addPanel(pid, res)
             //res.redirect('/');
             // TODO REDIRECT?
         });
