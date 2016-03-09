@@ -9,7 +9,4 @@ block content
               .col-md-4.col-sm-6.col-xs-12
                 .panel.panel-default
                   .panel-heading <a href="#{comic.comicSource}">#{comic.comicTitle}</a>
-                  each panel, i in comic.panels
-                    .panel-body <a href="#{comic.comicSource}"><img src="#{comic.panels[panel].source}"></img></a>
-
-          
+                  .panel-body <a href="#{comic.comicSource}"><img src="#{comic.panels[0].source}"></img></a>
