@@ -5,12 +5,9 @@ block content
 		.row
 			.col-md-4.col-sm-6.col-xs-12
 				.panel.panel-default
-					.panel-heading Search for comics
+					.panel-heading heading
 					.panel-body
 						form( method="post", action="/search")
-
-
-
 							input(type="text", name="string")
 							input(type="submit", value="Search!")
 
@@ -20,16 +17,14 @@ block content
 				h1.text-center.login-title Search for comics
 					div.signup-wall
 						form#formSignup(name="signup",method="post",action="/signup")
-							h1 Categories
 							.checkbox.text-center
 							label
 							input(type='radio', value='Humor', checked)
-							|     Humor
+							|     Humor  
+							br
 							label
 							input(type='radio', value='Fantasy')
-							|     Fantasy
-							h1 Search terms
+							|     Fantasy  
 							input(type='text', name='string')
-							input(type='text', name='email', class='form-control', placeholder='email',required, autofocus)
 							button(class='btn btn-lg btn-primary btn-block', type='submit') Register
 							span.clearfix
