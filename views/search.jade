@@ -12,22 +12,10 @@ block content
 							.checkbox.text-center
 							label
 							input(type='radio', value='Humor', checked)
-							|     Humor   
+							|     Humor
 							label
 							input(type='radio', value='Fantasy')
 							|     Fantasy
 							h1 Search terms
 							input(type="text", name="string")
 							input(type="submit", value="Search!")
-	div.container
-		div.row
-			div.col-sm-6.col-md-4.col-md-offset-4
-				h1.text-center.login-title Registration Details
-					div.signup-wall
-						form#formSignup(name="signup",method="post",action="/signup")
-							input(type='text', name='username', class='form-control', placeholder='username',required, autofocus)
-							input(type='password', name='password', class='form-control', placeholder='userPassword',required, autofocus)
-							input(type='text', name='firstname', class='form-control', placeholder='firstname',required, autofocus)
-							input(type='text', name='email', class='form-control', placeholder='email',required, autofocus)
-							button(class='btn btn-lg btn-primary btn-block', type='submit') Register
-							span.clearfix							
