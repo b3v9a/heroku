@@ -108,7 +108,7 @@ class AccountManager{
                 // TODO add back in check to see if password is actually valid
                 //this.isValidPassword(user.password, enteredPassword)
                 if (user) {
-                    return res.redirect('/');
+                    return res.redirect('/home');
                 } else {
                     return res.send("Invalid user/password combination entered. Please try again.");
                 }
