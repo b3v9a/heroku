@@ -8,13 +8,12 @@ block content
             if comic._id == comicID
               .col-md-4.col-sm-6.col-xs-12
                 .panel.panel-default
-                  .panel-heading <a href="#{comic.comicSource}">#{comic.comicTitle}</a>
+                  .panel-heading panels please
                   .panel-body <a href="#{comic.comicSource}"><img src="#{comic.panels[0].source}"></img></a>
 
           .row
               .col-md-3
                   each comic, i in comics
                       if comic._id == comicID
-                          each panel, i in comic.panels
-                              PANEL
-                              #{panel.source}
+                          each panel, i in comics.panels
+                              #{comics.panels[panel].source}
