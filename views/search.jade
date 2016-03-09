@@ -10,11 +10,10 @@ block content
 						form( method="post", action="/comics/:id/edit/addpanel")
 							.checkbox.text-center
 							label
-							input(type='checkbox', value='Humor')
+							input(type='radio', value='Humor', checked)
 							|     Humor
-							checkbox.text-center
 							label
-							input(type='checkbox', value='Fantasy')
+							input(type='radio', value='Fantasy')
 							|     Fantasy
-							input(type="url", name="_id", placeholder='Insert URL')
-							input(type="submit", value="Update Panel")
+							input(type="text", name="string", placeholder='search terms')
+							input(type="submit", value="Search!")
