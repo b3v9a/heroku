@@ -1,20 +1,22 @@
-// SNIPPET OF CODE INSPIRED BY https://github.com/tutsplus/passport-mongo/blob/master/views/index.jade
 extends layout
 
 block content
-  .container
-    h2 Log-In to your Comic Account!
-      .account-wall
-        form#formLogin(name="login",method="post",action="/login")
-          .form-group
-            .col-xs-3
-              input(type='text', name='username' class='form-control', placeholder='Username',required, autofocus)
-          .form-group
-            .col-xs-3
-              input(type='password', name='password' class='form-control', placeholder='userPassword', required)
-          button(class='btn btn-md btn-primary', type='submit') Sign in
-          span.clearfix
-      a(href='/signup', class='new-account') Create an account
-      #message
-      if message
-        h1.text-center.error-message #{message}
+	.page-header
+		h1 Humor
+	.row
+		each comic, i in comics
+			if comic.comicCategory == "Humor"
+				.col-md-4.col-sm-6.col-xs-12
+					.panel.panel-default
+						.panel-heading <a href="#{comic.comicSource}">#{comic.comicTitle}</a>
+						.panel-body <a href="/view/#{comic._id}"><img height="25%" src="#{comic.panels[0].source}"></img></a>
+
+	.page-header
+		h1 Fantasy
+	.row
+		each comic, i in comics
+			if comic.comicCategory == "Fantasy"
+				.col-md-4.col-sm-6.col-xs-12
+					.panel.panel-default
+						.panel-heading <a href="#{comic.comicSource}">#{comic.comicTitle}</a>
+						.panel-body <a href="/view/#{comic._id}"><img height="25%" src="#{comic.panels[0].source}"></img></a>
