@@ -1,62 +1,85 @@
 /// <reference path='types/DefinitelyTyped/node/node.d.ts' />
 /// <reference path='types/DefinitelyTyped/express/express.d.ts' />
+///<reference path='DBManager.ts'/>
 /// <reference path='Comic.ts' />
 /// <reference path='Panel.ts' />
 
-var monk = require('monk');
-var db = monk('mongodb://admin:sloth@ds051635.mongolab.com:51635/sloth310');
-var collection = db.get('comiccollection');
+var globalMonk = require('monk');
+var globalDB = globalMonk('mongodb://admin:sloth@ds051635.mongolab.com:51635/sloth310');
+var globalCollection = globalDB.get('comiccollection');
 
 class ComicViewer {
 
+    dbmanager;
 
     start() {
+        var monk = require('monk');
+        var db = monk('mongodb://admin:sloth@ds051635.mongolab.com:51635/sloth310');
+        this.dbmanager = db.get('comiccollection');
 
+        // TODO figure out how to hook this up to DBManager
+        //this.dbmanager = require('./DBManager');
     }
 
     getComic(req, res) {
-        // find comic using properties from req
-        var comicTitle = req.body.comictitle;
+        var comicId = req.param('_id');
 
-        //
-        collection.find({comicTitle: comicTitle}, {}, function(err, docs) {
-            res.render('/comictile', {
-                "comictile" : docs
-            });
+        globalCollection.findOne({_id: comicId}, {}, function(err, comic) {
+            if (err) {
+                res.send(err)
+            } else {
+                res(null, comic)
+            }
         });
+
+        //this.dbmanager.getComic({_id: comicId}, function(err, comic) {
+        //    if (err) {
+        //        res(err);
+        //    } else {
+        //        res(null, comic);
+        //    }
+        //});
     }
 
-    getComics(req, res) {
+    getComics(res) {
         // return all comics
-        collection.find({}, {}, function(err, docs) {
-            res.render('/comiclist', {
-                "comiclist": docs
-            });
+
+        globalCollection.find({}, {}, function(err, comics) {
+            if (err) {
+                res.send(err)
+            } else {
+                res(null, comics)
+            }
         });
-    }
 
-    getFirstPanel(req, res) {
-        // find first panel for a comic
-        var comicTitle = req.body.comictitle;
-
-        var comic = collection.find({comicTitle: comicTitle});
-        var panel = comic.panels[0];
-
-        res.render('/firstpanel', {
-            "panel": panel
-        })
+        //this.dbmanager.getComic({}, function(err, comics) {
+        //    if (err) {
+        //        res(err);
+        //    } else {
+        //        res(null, comics);
+        //    }
+        //});
     }
 
     getPanels(req, res) {
         // find all panels in a given comic
-        var comicTitle = req.body.comictitle;
+        var comicId = req.param('_id');
 
-        var comic = collection.find({comicTitle: comicTitle});
-        var panels = comic.getPanels();
+        globalCollection.find({_id: comicId}, {}, function(err, comic) {
+            if (err) {
+                res.send(err)
+            } else {
+                res(null, comic.panels)
+            }
+        });
 
-        res.render('/panellist', {
-            "panellist": panels
-        })
+        //this.dbmanager.getComic({_id: comicId}, function(err, comic) {
+        //    if (err) {
+        //        res(err);
+        //    } else {
+        //        res(null, comic.panels);
+        //    }
+        //});
     }
 
 
@@ -64,3 +87,4 @@ class ComicViewer {
 
 var viewer = new ComicViewer();
 viewer.start();
+module.exports = viewer;

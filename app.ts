@@ -23,6 +23,7 @@ class Application {
         var bodyParser = require('body-parser');
 
         // adding links to db
+        // TODO remove these once DBManager implementation is complete
         var mongo = require('mongodb');
         var monk = require('monk');
         var db = monk('mongodb://admin:sloth@ds051635.mongolab.com:51635/sloth310');

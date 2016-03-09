@@ -12,6 +12,7 @@ var Application = (function () {
         var cookieParser = require('cookie-parser');
         var bodyParser = require('body-parser');
         // adding links to db
+        // TODO remove these once DBManager implementation is complete
         var mongo = require('mongodb');
         var monk = require('monk');
         var db = monk('mongodb://admin:sloth@ds051635.mongolab.com:51635/sloth310');
@@ -30,13 +31,6 @@ var Application = (function () {
         app.use(express.static(path.join(__dirname, 'public')));
         app.use('/', routes);
         app.use('/users', users);
-
-
-        var expressSession = require('express-session');
-
-        var flash = require('connect-flash');
-        app.use(flash());
-
         // catch 404 and forward to error handler
         app.use(function (req, res, next) {
             var err = new Error('Not Found');
@@ -70,8 +64,4 @@ var Application = (function () {
 })();
 var app = new Application();
 app.start();
-
 //# sourceMappingURL=app.js.map
-
-//# sourceMappingURL=app.js.map
-

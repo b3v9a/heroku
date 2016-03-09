@@ -1,0 +1,165 @@
+extends layout
+
+block content
+    .container
+      //- Navbar with dropdowns, default color
+      nav.navbar.navbar-default( role="navigation" )
+        .navbar-header
+          button.navbar-toggle.collapsed( type="button", data-toggle="collapse", data-target="#navbar-inverse", aria-expanded="false", aria-controls="navbar")
+            span.sr-only Toggle navigation
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a.navbar-brand(href="#") SLOTH COMICS
+
+        #navbar-inverse.collapse.navbar-collapse
+          ul.nav.navbar-nav.navbar-left
+            li.active: a( href="/home") Home
+            li: a( href="#search" ) Search
+            li.dropdown
+              a.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-expanded="false" ) Account
+                span.caret
+              ul.dropdown-menu( role="menu" )
+                li: a( href="#" ) Upload
+                //li: a(href='/edit', class='new-account') Edit
+                li.divider
+                li: a(href='/pref', class='new-account') Preferences
+                li: a(href='/signout', class='new-account') Logout
+          ul.nav.navbar-nav.navbar-right
+            form#formLogin(name="login",method="post",action="/login")
+              .form-group.col-sm-5
+                  input(type='text', name='username' class='form-control', placeholder='Username',required, autofocus)
+              .form-group.col-sm-5
+                  input(type='password', name='password' class='form-control', placeholder='Password', required)
+                button(class='btn btn-md btn-primary', type='submit') Sign in
+      .row
+        .col-md-4.col-sm-6.col-xs-12
+          .panel.panel-default
+            .panel-heading ToolBox
+            .panel-body
+              //button.btn.btn-primary.btn-md(data-toggle='modal', data-target='#myModal') Upload
+              //#myModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+                //.modal-dialog
+                  //.modal-content
+                    //.modal-header
+                      //button.close(type='button', data-dismiss='modal', aria-hidden='true') x
+                      //h4#myModalLabel.modal-title hi
+                    //.modal-body choose file
+                    //.modal-footer
+                      //button.btn.btn-default(type='button', data-dismiss='modal') Close
+                      //button.btn.btn-primary(type='button') Submit changes
+              form#formAddPanel(name="addpanel",method="post",action="/comics/:id/edit/addpanel")
+                input(type='url', name='URL', class='form-control', placeholder='URL',required, autofocus)
+                button(class='btn btn-sm btn-primary', type='submit') Upload Panel
+                span.clearfix
+              //form#formAddPanel(name="addpanel",method="post",action="/addPanel")
+                //.form-group
+                  //label(for='exampleInputFile') File input
+                  //input#exampleInputFile(type='file')
+        .col-md-3
+          .panel.panel-default
+            .panel-heading Description
+            .panel-body #{comicdescription}
+
+        .col-md-3
+          .panel.panel-default
+            .panel-heading Categories
+            .checkbox.text-center
+              label
+                input(type='checkbox', value='')
+                |     Animals
+            .checkbox.text-center
+              label
+                input(type='checkbox', value='')
+                |     Random
+      .row
+        h1.
+          Insert ComicTitle.. #{comicTitle}
+        style.
+          #div1, #div2, #div3, #div4, #div5, #div6
+          {float:left; width:200px; height:200px; margin:30px;padding:10px; z-index: -1;border:5px solid #aaaaaa;}
+        script.
+          function allowDrop (ev) {
+            ev.preventDefault ();
+          }
+          function drag (ev) {
+            ev.dataTransfer.setData ("img", ev.target.id);
+          }
+          function drop (ev) {
+            ev.preventDefault ();
+            //get dragged data
+            var data = ev.dataTransfer.getData("img");
+            //get dragged data's element id
+            var img = document.getElementById (data);
+            // the dragged image drop element
+            var imgParent = img.parentNode;
+            // selects image not dragged
+            var ndrag = ev.currentTarget.firstElementChild;
+            //replace dragged image with ndrag image
+            ev.currentTarget.replaceChild (img, ndrag);
+            //append ndrag with img drop element
+            imgParent.appendChild (ndrag);
+          }
+          function removePanel1 (event){
+            var parent = document.getElementById("div1");
+            parent.removeChild(parent.firstChild);
+          }
+          function removePanel2 (event){
+            var parent = document.getElementById("div2");
+            parent.removeChild(parent.firstChild);
+          }
+          function removePanel3 (event){
+            var parent = document.getElementById("div3");
+            parent.removeChild(parent.firstChild);
+          }
+          function removePanel4 (event){
+            var parent = document.getElementById("div4");
+            parent.removeChild(parent.firstChild);
+          }
+          function removePanel5 (event){
+            var parent = document.getElementById("div5");
+            parent.removeChild(parent.firstChild);
+          }
+          function removePanel6 (event){
+            var parent = document.getElementById("div6");
+            parent.removeChild(parent.firstChild);
+          }
+      body
+        form#formDeletepanel(name="delete panel", method="delete", action="/comics/:id/edit/deletepanel")
+          button(type='submit', onclick='removePanel1(event)') DELETE PANEL test
+          .row
+            #div1(ondrop='drop(event)', ondragover='allowDrop(event)')
+              img#drag1(src='http://i.imgur.com/EZMrgDu.png', draggable='true', ondragstart='drag(event)', width='170', height='170')
+            //button(type='submit', onclick='removePanel1(event)') Remove Panel 1
+            #div2(ondrop='drop(event)', ondragover='allowDrop(event)')
+              img#drag2(src='http://i.imgur.com/wM0iFb1.png', draggable='true', ondragstart='drag(event)', width='170', height='170')
+            //button(type='submit', onclick='removePanel2(event)') Remove Panel 2
+            #div3(ondrop='drop(event)', ondragover='allowDrop(event)')
+              img#drag3(src='http://i.imgur.com/8M75zqb.png', draggable='true', ondragstart='drag(event)', width='170', height='170')
+            //button(type='submit', onclick='removePanel3(event)') Remove Panel 3
+          .row
+            .col-md-3
+              button(type='submit', onclick='removePanel1(event)') Remove Panel 1
+            .col-md-3
+              button(type='submit', onclick='removePanel2(event)') Remove Panel 2
+            .col-md-3
+              button(type='submit', onclick='removePanel3(event)') Remove Panel 3
+          .row
+            #div4(ondrop='drop(event)', ondragover='allowDrop(event)')
+              //img#drag4(src='#{panel.source[4]}', draggable='true', ondragstart='drag(event)', width='170', height='170')
+            //button(type='submit', onclick='removePanel4(event)') Remove Panel 4
+            #div5(ondrop='drop(event)', ondragover='allowDrop(event)')
+              //img#drag5(src='#{panel.source[5]}', draggable='true', ondragstart='drag(event)', width='170', height='170')
+            //button(type='submit', onclick='removePanel5(event)') Remove Panel 5
+            #div6(ondrop='drop(event)', ondragover='allowDrop(event)')
+              //img#drag6(src='#{panel.source[6]}', draggable='true', ondragstart='drag(event)', width='170', height='170')
+            //button(type='submit', onclick='removePanel6(event)') Remove Panel 6
+          .row
+            .col-md-3
+              button(type='submit', onclick='removePanel4(event)') Remove Panel 4
+            .col-md-3
+              button(type='submit', onclick='removePanel5(event)') Remove Panel 5
+            .col-md-3
+              button(type='submit', onclick='removePanel6(event)') Remove Panel 6
+    script( src='//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js' )
+    script( src='//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js' )

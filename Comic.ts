@@ -3,8 +3,11 @@
 /// <reference path='Panel.ts' />
 
 class Comic {
-    // implement comic class here
 
+    // _id is only set after insertion into the DB; it will be a long alphanumeric
+    //      string, unfortunately
+    // TODO: find a way to store comic IDs more effectively
+    _id: number;
     title: string;
     category: string;
     panels: Panel[];

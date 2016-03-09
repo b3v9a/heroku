@@ -10,18 +10,18 @@ block content
 						span.icon-bar
 						span.icon-bar
 						span.icon-bar
-					a.navbar-brand(href="#") SLOTH COMICS  
+					a.navbar-brand(href="#") SLOTH COMICS
 
 				#navbar-inverse.collapse.navbar-collapse
 					ul.nav.navbar-nav
 						li.active: a( href="/home") Home
 						li: a( href="#search" ) Search
 						li.dropdown
-							a.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-expanded="false" ) Account 
+							a.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-expanded="false" ) Account
 								span.caret
 							ul.dropdown-menu( role="menu" )
 								li: a( href="#" ) Upload
-								li: a( href="#" ) Edit
+								li: a( href='/edit' ) Edit
 								li.divider
 								li: a(href='/pref', class='new-account') Preferences
 								li: a(href='/signout', class='new-account') Logout
@@ -44,7 +44,7 @@ block content
 						.col-md-4.col-sm-6.col-xs-12
 							.panel.panel-default
 								.panel-heading <a href="#{comic.image}">#{comic.title}</a>
-								.panel-body <a href="#{comic.image}"><img src="#{comic.thumb}"></img></a>		
+								.panel-body <a href="#{comic.image}"><img src="#{comic.thumb}"></img></a>
 
 		script( src='//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js' )
 		script( src='//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js' )
