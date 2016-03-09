@@ -23,7 +23,7 @@ class Router {
         var db = monk('localhost:27017/Sloth');
         db = monk('mongodb://admin:sloth@ds051635.mongolab.com:51635/sloth310');
 
-        /* GET index page. */
+        /* GET Index page. */
         router.get('/', function (req, res) {
             res.render('index', {title: 'Comic Application'});
         });
