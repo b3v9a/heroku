@@ -24,8 +24,13 @@ class Router {
         db = monk('mongodb://admin:sloth@ds051635.mongolab.com:51635/sloth310');
 
         /* GET Index page. */
-        router.get('/', function (req, res) {
-            res.render('index', {title: 'Comic Application'});
+        router.get('/index', function(req, res){
+            var collection = db.get('comiccollection');
+            collection.find({}, {},  function(e, docs){
+                res.render('index',{
+                    "comics" : docs
+                });
+            });
         });
 
         /* POST to Add Comic
@@ -282,16 +287,6 @@ class Router {
                     })
                 }
             })
-        });
-
-        /* GET Home Page */
-        router.get('/home', function(req, res){
-            var collection = db.get('comiccollection');
-            collection.find({}, {},  function(e, docs){
-                res.render('home',{
-                    "comics" : docs
-                });
-            });
         });
 
         /* GET View Page */
