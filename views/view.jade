@@ -5,7 +5,7 @@ block content
       .row
         .col-md-3
           each comic, i in comics
-            if comic._id == comidID
+            if comic._id == comicID
               .col-md-4.col-sm-6.col-xs-12
                 .panel.panel-default
                   .panel-heading <a href="#{comic.comicSource}">#{comic.comicTitle}</a>
