@@ -8,33 +8,19 @@ block content
 					.panel-heading Search for comics
 					.panel-body
 						form( method="post", action="/search")
+							input(type='text', name='string')
+							br
 							.checkbox.text-center
 							label
-							input(type='radio', value='Humor', checked)
+							input(type='radio', value='Humor')
 							|     Humor  
 							br
 							label
 							input(type='radio', value='Fantasy')
 							|     Fantasy  
 							br
-							input(type='text', name='string')
+							label
+							input(type='radio', value='All', checked)
+							|     Fantasy  
 							br
 							button(class='btn btn-lg btn-primary btn-block', type='submit') Search
-
-	div.container
-		div.row
-			div.col-sm-6.col-md-4.col-md-offset-4
-				h1.text-center.login-title Search for comics
-					div.signup-wall
-						form#formSignup(name="signup",method="post",action="/signup")
-							.checkbox.text-center
-							label
-							input(type='radio', value='Humor', checked)
-							|     Humor  
-							br
-							label
-							input(type='radio', value='Fantasy')
-							|     Fantasy  
-							input(type='text', name='string')
-							button(class='btn btn-lg btn-primary btn-block', type='submit') Register
-							span.clearfix
