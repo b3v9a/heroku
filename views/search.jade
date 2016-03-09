@@ -1,11 +1,15 @@
 extends layout
 
 block content
-	.row
-		.col-md-4.col-sm-6.col-xs-12
-			.panel.panel-default
-				.panel-heading Search for stuff
-				.panel-body
-					form( method="post", action="/comics/:id/edit/addpanel")
-						input(type="url", name="_id", placeholder='Insert URL')
-						input(type="submit", value="Update Panel")
+      .row
+        .col-md-4.col-sm-6.col-xs-12
+          .panel.panel-default
+            .panel-heading ToolBox
+            .panel-body
+              form( method="post", action="/comics/:id/edit/addpanel")
+                input(type="url", name="_id", placeholder='Insert URL')
+                input(type="submit", value="Update Panel")
+        .col-md-3
+          .panel.panel-default
+            .panel-heading Description
+            .panel-body #{comicdescription}
