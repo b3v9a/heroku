@@ -5,9 +5,10 @@ block content
 		.row
 			.col-md-4.col-sm-6.col-xs-12
 				.panel.panel-default
-					.panel-heading Search for stuff
+					.panel-heading Search for comics
 					.panel-body
-						form( method="post", action="/comics/:id/edit/addpanel")
+						form( method="post", action="/search")
+							h1 Categories
 							.checkbox.text-center
 							label
 							input(type='radio', value='Humor', checked)
@@ -15,5 +16,6 @@ block content
 							label
 							input(type='radio', value='Fantasy')
 							|     Fantasy
-							input(type="text", name="string", placeholder='search terms')
+							h1 Search terms
+							input(type="text", name="string")
 							input(type="submit", value="Search!")
