@@ -268,6 +268,16 @@ var Router = (function () {
                 });
             });
         });
+        /* GET Search Results Page */
+        router.get('/search/:category', function (req, res) {
+            var collection = db.get('comiccollection');
+            collection.find({}, {}, function (e, docs) {
+                res.render('results', {
+                    "category": req.params.category,
+                    "comics": docs
+                });
+            });
+        });
         /* GET edit page */
         //router.get('/edit', function (req, res) {
         //    res.render('edit', {});
