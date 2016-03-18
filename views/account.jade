@@ -1,16 +1,18 @@
 extends layout
 
 block content
-		div.container
-			div.row
-				div.col-sm-6.col-md-4.col-md-offset-4
-					h1.text-center Account Details
-						form(name="updateUser",method="post",action="/")
-							br
-							input(type='text', name='username', class='form-control', placeholder='sloth',required, autofocus)
-							br
-							input(type='text', name='username', class='form-control', placeholder='Sloth McSlothersloth',required, autofocus)
-							br
-							input(type='text', name='username', class='form-control', placeholder='sloth@sloth.sloth',required, autofocus)
-							br
-							button(class='btn btn-lg btn-primary btn-block', type='submit') Update
+	each account, i in users
+		if account.username == userName
+			div.container
+				div.row
+					div.col-sm-6.col-md-4.col-md-offset-4
+						h1.text-center Account Details
+							form(name="updateUser",method="post",action="/")
+								br
+								input(type='text', name='username', class='form-control', placeholder='#{account.username}',required, autofocus)
+								br
+								input(type='text', name='username', class='form-control', placeholder='#{account.firstname}',required, autofocus)
+								br
+								input(type='text', name='username', class='form-control', placeholder='#{account.email}',required, autofocus)
+								br
+								button(class='btn btn-lg btn-primary btn-block', type='submit') Update

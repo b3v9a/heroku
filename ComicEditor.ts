@@ -4,6 +4,7 @@
 /// <reference path='Comic.ts' />
 /// <reference path='Panel.ts' />
 
+
 var globalMonk = require('monk');
 var globalDB = globalMonk('mongodb://admin:sloth@ds051635.mongolab.com:51635/sloth310');
 var globalCollection = globalDB.get('comiccollection');
@@ -52,48 +53,12 @@ class ComicEditor {
         });
     }
 
+    // NOT IN USE
+    /*
     addPanel(req, res) {
-        //var comicId = req.param.comicId;
-        //var panelSource = req.param.panelSource;
-        var panelSource = req.panels[0].source;
-        var comicId = req._id;
 
-        //console.log(comicId);
-        //console.log(panelSource);
-
-        this.dbmanager.find({_id: comicId}, {}, function(err, result) {
-            if (err) {
-                res("Cannot find comic: " + err)
-            } else {
-                var comic = result;
-                var pnl = req.panels;
-                //var numPanels = comic.panels.length;
-                var numPanels = pnl.length;
-                //console.log(numPanels);
-
-                var randomizedId = Math.floor((Math.random() * 10000));
-                var newPanel = {
-                    _id: randomizedId,
-                    source: panelSource,
-                    position: numPanels + 1
-                };
-
-                console.log(newPanel);
-
-                // insert new panel into last position in current set of panels
-                //comic.panels[numPanels] = newPanel;
-                pnl[numPanels] = newPanel;
-
-                globalCollection.insert({_id: comic._id}, {}, function(err, result) {
-                    if (err) {
-                        res.send("Unable to add panel: " + err)
-                    } else {
-                        res.send("Panel successfully added!")
-                    }
-                });
-            }
-        });
     }
+    */
 
     deletePanel(req, res) {
         var comicId = req.param.comicId;

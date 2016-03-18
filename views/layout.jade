@@ -41,7 +41,8 @@ html
           ul.nav.navbar-nav.navbar-left
             li: a( href="/search") Search
             li: a( href="/comics/:id/view/all") Edit
-            li: a( href="/account") Account
+            li: a( href="/account/:username") Account
+            li: a( href="/comics/addcomic") Add Comic
             li: a( href="/signup") Register
           ul.nav.navbar-nav.navbar-right
             form#formLogin(name="login", method="post", action="/login")

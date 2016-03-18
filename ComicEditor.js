@@ -45,44 +45,12 @@ var ComicEditor = (function () {
             }
         });
     };
-    ComicEditor.prototype.addPanel = function (req, res) {
-        //var comicId = req.param.comicId;
-        //var panelSource = req.param.panelSource;
-        var panelSource = req.panels[0].source;
-        var comicId = req._id;
-        //console.log(comicId);
-        //console.log(panelSource);
-        this.dbmanager.find({ _id: comicId }, {}, function (err, result) {
-            if (err) {
-                res("Cannot find comic: " + err);
-            }
-            else {
-                var comic = result;
-                var pnl = req.panels;
-                //var numPanels = comic.panels.length;
-                var numPanels = pnl.length;
-                //console.log(numPanels);
-                var randomizedId = Math.floor((Math.random() * 10000));
-                var newPanel = {
-                    _id: randomizedId,
-                    source: panelSource,
-                    position: numPanels + 1
-                };
-                console.log(newPanel);
-                // insert new panel into last position in current set of panels
-                //comic.panels[numPanels] = newPanel;
-                pnl[numPanels] = newPanel;
-                globalCollection.insert({ _id: comic._id }, {}, function (err, result) {
-                    if (err) {
-                        res.send("Unable to add panel: " + err);
-                    }
-                    else {
-                        res.send("Panel successfully added!");
-                    }
-                });
-            }
-        });
-    };
+    // NOT IN USE
+    /*
+    addPanel(req, res) {
+
+    }
+    */
     ComicEditor.prototype.deletePanel = function (req, res) {
         var comicId = req.param.comicId;
         var panelId = req.body.panelId;
@@ -272,8 +240,7 @@ var ComicEditor = (function () {
         });
     };
     return ComicEditor;
-})();
+}());
 var editor = new ComicEditor();
 editor.start();
 module.exports = editor;
-//# sourceMappingURL=ComicEditor.js.map

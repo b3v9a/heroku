@@ -1,7 +1,13 @@
 extends layout
 
 block content
+
     each comic, i in comics
         if comic._id == comicID
+            <a href="/comics/#{comic._id}/view/all">EDIT PANEL</a>
+
             each panel in comic.panels
-                <br><img src="#{panel.source}"></img>              
+                <br><img src="#{panel.source}"></img>
+
+
+

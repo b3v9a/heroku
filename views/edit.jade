@@ -6,9 +6,11 @@ block content
           .panel.panel-default
             .panel-heading ToolBox
             .panel-body
-              form( method="post", action="/comics/:id/edit/addpanel")
-                input(type="url", name="_id", placeholder='Insert URL')
-                input(type="submit", value="Update Panel")
+            each comic, i in comics
+              if comic._id == comicID
+                form(method="post", action="/comics/#{comic._id}/edit/addpanel")
+                  input(type="url", name="source", placeholder='source')
+                  input(type="submit", value="Update Panel")
         .col-md-3
           .panel.panel-default
             .panel-heading Description
@@ -78,37 +80,23 @@ block content
             parent.removeChild(parent.firstChild);
           }
       body
-          //form#formDeletepanel( method="delete", action="/comics/:id/edit/deletepanel")
-          //input(id="delete", value="X", type="submit")
-          //button(type='submit', onclick='removePanel1(event)') DELETE PANEL test
-          .row
-            #div1(ondrop='drop(event)', ondragover='allowDrop(event)')
-              img#drag1(src='#{panels[0].source}', draggable='true', ondragstart='drag(event)', width='170', height='170')
-            #div2(ondrop='drop(event)', ondragover='allowDrop(event)')
-              img#drag2(src='#{panels[1].source}', draggable='true', ondragstart='drag(event)', width='170', height='170')
-            #div3(ondrop='drop(event)', ondragover='allowDrop(event)')
-              img#drag3(src='#{panels[2].source}', draggable='true', ondragstart='drag(event)', width='170', height='170')
-          .row
-            .col-md-3
-              button(type='submit', onclick='removePanel1(event)') Remove Panel 1
-            .col-md-3
-              button(type='submit', onclick='removePanel2(event)') Remove Panel 2
-            .col-md-3
-              button(type='submit', onclick='removePanel3(event)') Remove Panel 3
-          .row
-            #div4(ondrop='drop(event)', ondragover='allowDrop(event)')
-              img#drag4(src='#{panels[3].source}', draggable='true', ondragstart='drag(event)', width='170', height='170')
-            #div5(ondrop='drop(event)', ondragover='allowDrop(event)')
-              img#drag5(src='#{panels[4].source}', draggable='true', ondragstart='drag(event)', width='170', height='170')
-            #div6(ondrop='drop(event)', ondragover='allowDrop(event)')
-              img#drag6(src='#{panels[5].source}', draggable='true', ondragstart='drag(event)', width='170', height='170')
-          .row
-            .col-md-3
-              button(type='submit', onclick='removePanel4(event)') Remove Panel 4
-            .col-md-3
-              button(type='submit', onclick='removePanel5(event)') Remove Panel 5
-            .col-md-3
-              button(type='submit', onclick='removePanel6(event)') Remove Panel 6
+        each comic, i in comics
+          if comic._id == comicID
+            form#formDeletepanel( method="post", action="/comics/#{comic._id}/edit/deletecomic")
+              input(name="comicID", type="hidden", value=comic._id)
+              input(value="Delete Entire Comic", type="submit")
+            form#formDeletepanel( method="post", action="/comics/#{comic._id}/edit/deletepanel")
+              each panel, i in comic.panels
+                .row
+                  #div(ondrop='drop(event)', ondragover='allowDrop(event)')
+                    img#drag(src='#{panel.source}', draggable='true', ondragstart='drag(event)', width='170', height='170')
+                  input(name="panelID", type="hidden", value= panel.position)
+                  input(value="Delete this panel", type="submit")
+
+
+
+
+
 
     script( src='//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js' )
     script( src='//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js' )
