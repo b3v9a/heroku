@@ -1,102 +1,50 @@
 extends layout
 
 block content
+  each comic, i in comics
+    if comic._id == comicID
       .row
         .col-md-4.col-sm-6.col-xs-12
           .panel.panel-default
-            .panel-heading ToolBox
+            .panel-heading Upload a New Panel
             .panel-body
-            each comic, i in comics
-              if comic._id == comicID
-                form(method="post", action="/comics/#{comic._id}/edit/addpanel")
-                  input(type="url", name="source", placeholder='source')
-                  input(type="submit", value="Update Panel")
+              each comic, i in comics
+                if comic._id == comicID
+                  form(method="post", action="/comics/#{comic._id}/edit/addpanel")
+                    input(type="url", name="source", placeholder='source')
+                    input(type="submit", value="Upload")
         .col-md-3
           .panel.panel-default
             .panel-heading Description
-            .panel-body #{comicdescription}
+            .panel-body #{comic.description}
 
         .col-md-3
           .panel.panel-default
-            .panel-heading Categories
-            .checkbox.text-center
-              label
-                input(type='checkbox', value='')
-                |     Animals
-            .checkbox.text-center
-              label
-                input(type='checkbox', value='')
-                |     Random
+            .panel-heading Comic Category
+            .panel-body #{comic.comicCategory}
       .row
-        h1.
-          #{title}
-        style.
-          #div1, #div2, #div3, #div4, #div5, #div6
-          {float:left; width:200px; height:200px; margin:30px;padding:10px; z-index: -1;border:5px solid #aaaaaa;}
-        script.
-          function allowDrop (ev) {
-            ev.preventDefault ();
-          }
-          function drag (ev) {
-            ev.dataTransfer.setData ("img", ev.target.id);
-          }
-          function drop (ev) {
-            ev.preventDefault ();
-            //get dragged data
-            var data = ev.dataTransfer.getData("img");
-            //get dragged data's element id
-            var img = document.getElementById (data);
-            // the dragged image drop element
-            var imgParent = img.parentNode;
-            // selects image not dragged
-            var ndrag = ev.currentTarget.firstElementChild;
-            //replace dragged image with ndrag image
-            ev.currentTarget.replaceChild (img, ndrag);
-            //append ndrag with img drop element
-            imgParent.appendChild (ndrag);
-          }
-          function removePanel1 (event){
-            var parent = document.getElementById("div1");
-            parent.removeChild(parent.firstChild);
-          }
-          function removePanel2 (event){
-            var parent = document.getElementById("div2");
-            parent.removeChild(parent.firstChild);
-          }
-          function removePanel3 (event){
-            var parent = document.getElementById("div3");
-            parent.removeChild(parent.firstChild);
-          }
-          function removePanel4 (event){
-            var parent = document.getElementById("div4");
-            parent.removeChild(parent.firstChild);
-          }
-          function removePanel5 (event){
-            var parent = document.getElementById("div5");
-            parent.removeChild(parent.firstChild);
-          }
-          function removePanel6 (event){
-            var parent = document.getElementById("div6");
-            parent.removeChild(parent.firstChild);
-          }
+        h1(align='center') #{comic.comicTitle}
+
       body
-        each comic, i in comics
-          if comic._id == comicID
-            form#formDeletepanel( method="post", action="/comics/#{comic._id}/edit/deletecomic")
-              input(name="comicID", type="hidden", value=comic._id)
-              input(value="Delete Entire Comic", type="submit")
-            form#formDeletepanel( method="post", action="/comics/#{comic._id}/edit/deletepanel")
-              each panel, i in comic.panels
-                .row
-                  #div(ondrop='drop(event)', ondragover='allowDrop(event)')
-                    img#drag(src='#{panel.source}', draggable='true', ondragstart='drag(event)', width='170', height='170')
-                  input(name="panelID", type="hidden", value= panel.position)
-                  input(value="Delete this panel", type="submit")
-
-
-
-
-
+        .row
+              form#formDeletecomic( method="post", action="/comics/#{comic._id}/edit/deletecomic")
+                input(name="comicID", type="hidden", value=comic._id)
+                div(style='text-align:right')
+                  input(value="Delete Entire Comic", type="submit")
+              each panel, index in comic.panels
+                .col-md-4.col-sm-6.col-xs-12
+                  .panel.panel-info
+                    .panel-body
+                      div(style='text-align:center')
+                        img(src='#{panel.source}', width='170', height='170')
+                        form#formSwapPanel( method="post", action="/comics/#{comic._id}/edit/swappanel")
+                          input(name="index", type="hidden", value=index)
+                          input(value="Swap", type="submit")
+                        -var cid = [panel._id]
+                        each val in cid
+                          form#formDeletepanel( method="post", action="/comics/#{comic._id}/edit/deletepanel")
+                            input(name="panelID", type="hidden", value=val)
+                            input(value="Delete this panel", type="submit")
 
     script( src='//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js' )
     script( src='//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js' )

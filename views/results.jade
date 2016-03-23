@@ -1,0 +1,21 @@
+extends layout
+
+block content
+    .row
+        h2 Search results
+            .panel.panel-default
+                if error == true
+                    .panel-body
+                        h3 #{message}
+                if result == true
+                    each comic, i in results
+                        .panel-body
+                            .col-md-2
+                                <a href="/view/#{comic._id}"><img height="25%" src="#{comic.panels[0].source}"></img></a>
+                            .col-md-8.col-md-offset-0
+                                .row
+                                    h3 <a href="/view/#{comic._id}">#{comic.comicTitle}</a>
+                                    h4 #{comic.description} <-- (this is the description)
+                                    br
+                                    h5 Categories: #{comic.comicCategory} <-- (these are the categories)
+                                    h5 Uploaded: #{comic.date} <-- (this should show a date)

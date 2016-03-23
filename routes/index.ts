@@ -41,7 +41,7 @@ class Router {
         });
 
 
-        /* POST to Add Comic FIXING.
+        /* POST to Add Comic DONE.
          * @param comicTitle - the title of the comic to be created
          * @param comicDescription - the description of the comic to be created
          * @param category - the category to be associated with the comic
@@ -54,6 +54,8 @@ class Router {
             var description = req.body.description;
             var firstpanel = req.body.firstpanel;
             var panels = [];
+
+            console.log(comicCategory);
 
             collection.find({"comicTitle": comicTitle}, {}, function (e, docs) {
                 if(e){
@@ -100,7 +102,7 @@ class Router {
 
 
 
-        /* DELETE to Delete Comic
+        /* DELETE to Delete Comic DONE.
         * @param comicId - the ID of the comic to be deleted
         * */
         router.post('/comics/:id/edit/deletecomic', function(req, res) {
@@ -120,7 +122,8 @@ class Router {
                         if (err) {
                             res.send("Something went wrong when trying to delete the comic: " + err)
                         } else {
-                            res.send("Comic successfully deleted!")
+                            //res.send("Comic successfully deleted!")
+                            res.redirect('/');
                         }
                     })
                 }
@@ -130,7 +133,7 @@ class Router {
 
 
 
-         /* POST to Add Panel FIXING.
+         /* POST to Add Panel DONE.
         * @param comicId - the ID of the comic which the panel should be added to
         * @param source - a URL where the image representing the panel is located
         * */
@@ -139,10 +142,7 @@ class Router {
             var comicID = ObjectID(req.params.id);
             var collection = db.get('comiccollection');
             var source = req.body.source;
-
-            console.log(comicID);
-            console.log(typeof comicID);
-
+            
             collection.findById( comicID,  function(err, docs){
                 if (err) {
                 res("Cannot find comic: " + err)
@@ -164,15 +164,16 @@ class Router {
                         { $push: { panels : {
                             _id: randomizedId,
                             source: source,
-                            position: numPanels + 1 }}
+                            position: numPanels + 2 }}
                     }, function (err, doc) {
                         if (err) {
                             res.send("There was a problem adding the information to the database.");
                         }
                         else {
                         }
-                            res.send("Panel successfully added!")
-                            //res.redirect("/");
+                            //window.alert('SUCESSSSSS');
+                            //res.send("Panel successfully added!")
+                            res.redirect('back');
                     });
 
                 }
@@ -182,7 +183,7 @@ class Router {
 
 
 
-        /* DELETE to Delete Panel FIXING.
+        /* DELETE to Delete Panel DONE.
         * @param panelId - the ID of the panel to be deleted
         * @param comicId - the ID of the comic that the panel belongs to
         * */
@@ -190,12 +191,7 @@ class Router {
             var ObjectID = require('mongodb').ObjectID
             var collection = db.get('comiccollection');
             var comicID = ObjectID(req.params.id);
-            var panelID = req.body.panelID;
-            //var panelID = Number(req.body.panelID);
-
-            var newpanelID = panelID.
-
-            console.log(panelID);
+            var panelID = Number(req.body.panelID);
 
             collection.findById( comicID, function(err, result) {
                 if (err) {
@@ -211,7 +207,8 @@ class Router {
                         if (err) {
                             res.send("Something went wrong when trying to delete the panel: " + err)
                         } else {
-                            res.send("Panel successfully deleted!")
+                            //res.send("Panel successfully deleted!")
+                            res.redirect('back');
                         }
                     })
                 }
@@ -219,11 +216,62 @@ class Router {
         });
 
 
-
-        /* POST to Swap Panel */
-        // WARNING: This method is currently not working -- DO NOT USE IT
+        /* POST to Swap Panel FIXING.
+        */
         router.post('/comics/:id/edit/swappanel', function (req, res) {
-            editor.swapPanels(req, res)
+            var ObjectID = require('mongodb').ObjectID
+            var collection = db.get('comiccollection');
+            var comicID = ObjectID(req.params.id);
+
+            var index = Number(req.body.index);
+            var otherindex = index + 1;
+
+            collection.findById( comicID,  function(err, comic){
+                if (err) {
+                res.send("Cannot swap panels: " + err)
+                } else
+
+                    console.log(index);
+                    console.log(otherindex);
+
+                    if (otherindex === comic.panels.length) {
+                        //res.send("error");
+                        var previndex = index - 1;
+
+                        var panel = comic.panels[index];
+                        comic.panels[index] = comic.panels[previndex];
+                        comic.panels[previndex] = panel;
+
+                        collection.update(
+                            { _id : comicID },
+                            comic,function (err, doc) {
+                            if (err) {
+                                res.send("There was a problem adding the information to the database.");
+                            } else {
+
+                                res.redirect('back');
+                            }
+                        });
+
+                    } else {
+
+                    var panel = comic.panels[index];
+                    comic.panels[index] = comic.panels[otherindex];
+                    comic.panels[otherindex] = panel;
+
+                    collection.update(
+                        { _id : comicID },
+                        comic,function (err, doc) {
+                        if (err) {
+                            res.send("There was a problem adding the information to the database.");
+                        } else {
+
+                            res.redirect('back');
+                        }
+                    });
+            }
+
+        });
         });
 
         /* GET a single comic
@@ -256,25 +304,10 @@ class Router {
         });
 
 
-
-
-        /* GET all panels from a comic DELETE LATER */
-        // @param comicId - ID for comic
-        /*router.get('/comics/:id/view/all', function (req, res) {
-            viewer.getPanels(cid, function (error, panels) {
-                res.render('edit', {
-                    panels: panels,
-                    title: "Edit Comic Here!"
-                })
-            });
-        });
-        */
-
         /* GET all panels from a comic FIXING */
         // @param comicId - ID for comic
         router.get('/comics/:id/view/all', function (req, res) {
            var collection = db.get('comiccollection');
-
             collection.find({}, {},  function(e, docs){
                 res.render('edit',{
                     "comicID" : req.params.id,
@@ -378,25 +411,36 @@ class Router {
 
         /* GET Search Page */
         router.get('/search', function(req, res){
-            var collection = db.get('comiccollection');
-            collection.find({}, {},  function(e, docs){
-                res.render('search',{
-                    "comics" : docs
-                });
-            });
+            // var collection = db.get('comiccollection');
+            // collection.find({}, {},  function(e, docs){
+                res.render('search');
+            // });
         });
 
         /* GET Search Results Page */
-        router.get('/search/:category', function(req, res){
-            var collection = db.get('comiccollection');
-            collection.find({}, {},  function(e, docs){
-                res.render('results',{
-                    "category" : req.params.category,
-                    "comics" : docs
-                });
-            });
+        // router.get('/search/:category', function(req, res){
+            // var collection = db.get('comiccollection');
+            // collection.find({}, {},  function(e, docs){
+            //     res.render('results',{
+            //         "category" : req.params.category,
+            //         "comics" : docs
+            //     });
+            // });
+        // });
+        
+        router.post('/search', function(req, res) {
+            viewer.searchMatchingComics(req, res);
         });
 
+
+        /* GET edit page */
+        //router.get('/edit', function (req, res) {
+        //    res.render('edit', {});
+        //});
+        
+        router.get('/search', function(req, res) {
+            res.render('search');
+        });
 
 
         /* Handle Logout */

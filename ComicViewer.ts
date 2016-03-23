@@ -84,6 +84,36 @@ class ComicViewer {
         //});
     }
 
+    searchMatchingComics(req, res) {
+        console.log(req.body.query);
+        var input = new RegExp(req.body.query, 'i');
+        console.log(input);
+        var query = {
+            "$or": [
+                {"comicTitle": input},
+                {"description": input}
+            ]
+        };
+        var comics;
+
+        globalCollection.find(query, {}, function(err, comics) {
+            if (comics.length === 0) {
+                res.render('search', {
+                    "query": true,
+                    "error": true,
+                    "message": "No results found, please try again"
+                })
+            } else {
+                    res.render('search',{
+                        "query": true,
+                        "result": true,
+                        "results" : comics
+                    });
+                // res(comics);
+            }
+        })
+    }
+
 
 }
 

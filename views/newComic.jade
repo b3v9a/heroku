@@ -4,22 +4,26 @@ block content
 	div.container
 		div.row
 			div.col-sm-6.col-md-4.col-md-offset-4
-				h1.text-center.login-title Add New Comic
+				h1.text-center.login-title New Comic
 					div.signup-wall
 						form#formAddComic(name="addcomic",method="post",action="/comics/addcomic")
 							input(type='text', name='comicTitle', class='form-control', placeholder='Insert Comic Title',required, autofocus)
-
-							input(type='text', name='comicCategory', class='form-control', placeholder='Insert Comic Category',required, autofocus)
-
-							input(type='url', name='comicSource', class='form-control', placeholder='Insert Comic Source',required, autofocus)
-
+							p.
+							input(type='radio', name='comicCategory', value='Humor', checked='',required)
+							| Humor
+							p.
+							input(type='radio', name='comicCategory', value='Fantasy', checked='',required)
+							| Fantasy
+							p.
+							input(type='url', name='comicSource', class='form-control', placeholder='Insert Comic Source (eg. .com)',required, autofocus)
+							p.
 							input(type='text', name='description', class='form-control', placeholder='Insert a Description',required, autofocus)
-
+							p.
 							input(type='hidden', name='panels', class='form-control', placeholder='Insert Panels',required, autofocus)
-
-							input(type="url", name="firstpanel", placeholder='Insert First Panel')
-
-							button(class='btn btn-lg btn-primary btn-block', type='submit') Create New Comic!
+							p.
+							input(type='url', name='firstpanel', class='form-control', placeholder='Insert First Panel Image (eg. .png/.jpg)',required, autofocus)
+							p.
+							button(class='btn btn-md btn-primary btn-block', type='submit') Create New Comic!
 							span.clearfix
 					#message
 						if message

@@ -1,25 +1,53 @@
 extends layout
 
 block content
-	.container
+	.page-header
+		h1 Search Comics
+	.jumbotron
 		.row
-			.col-md-4.col-sm-6.col-xs-12
+			.col-md-2.col-md-offset-1
+				form( method="post", action="/search")
+					h4 Category
+				.checkbox.text-center
+				label
+				input(type='radio', value='All', checked)
+				|     All Categories
+				br
+				label
+				input(type='radio', value='Humor')
+				|     Humor
+				br
+				label
+				input(type='radio', value='Fantasy')
+				|     Fantasy
+			.col-md-6
+				.row
+					br
+					form(name="searchComics",method="post")
+						.col-md-8
+							input(type='text' name='query' class='form-control' placeholder='Enter your search here...', required)
+						.col-md-4
+							button(class='btn btn-md btn-primary btn-block', type='submit') Search
+
+
+	.row
+		if query == true
+			h2 Search results
 				.panel.panel-default
-					.panel-body
-						form( method="post", action="/search")
-							input(type='text', name='string', placeholder='Description')
-							br
-							.checkbox.text-center
-							label
-							input(type='radio', value='Humor')
-							|     Humor  
-							br
-							label
-							input(type='radio', value='Fantasy')
-							|     Fantasy  
-							br
-							label
-							input(type='radio', value='All', checked)
-							|     All Categories  
-							br
-							button(class='btn btn-lg btn-primary btn-block', type='submit') Search
+					if error == true
+						.panel-body
+							h3 #{message}
+					if result == true
+						each comic, i in results
+							.panel-body
+								.col-md-2
+									<a href="/view/#{comic._id}"><img height="25%" src="#{comic.panels[0].source}"></img></a>
+								.col-md-8.col-md-offset-0
+									.row
+										h3 <a href="/view/#{comic._id}">#{comic.comicTitle}</a>
+										h4 #{comic.description} <-- (this is the description)
+										br
+										h5 Categories: #{comic.comicCategory} <-- (these are the categories)
+										h5 Uploaded: #{comic.date} <-- (this should show a date)
+
+

@@ -9,3 +9,4 @@ var UserComment = (function () {
     }
     return UserComment;
 }());
+//# sourceMappingURL=UserComment.js.map

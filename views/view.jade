@@ -1,13 +1,15 @@
 extends layout
 
 block content
-
-    each comic, i in comics
-        if comic._id == comicID
-            <a href="/comics/#{comic._id}/view/all">EDIT PANEL</a>
-
-            each panel in comic.panels
-                <br><img src="#{panel.source}"></img>
+    .row(align='center')
+        each comic, i in comics
+            if comic._id == comicID
+                h2#top #{comic.comicTitle} Comic!
+                    br.
+                    <a href="/comics/#{comic._id}/view/all">EDIT PANEL</a>
+                    each panel in comic.panels
+                        <br><img src="#{panel.source}"></img>
+                        a(href='#top') Go to top
 
 
 
