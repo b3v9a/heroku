@@ -1,22 +1,28 @@
 extends layout
 
 block content
-	.page-header
-		h1 Humor
-	.row
-		each comic, i in comics
-			if comic.comicCategory == "Humor"
-				.col-md-4.col-sm-6.col-xs-12
-					.panel.panel-default
-						.panel-heading <a href="#{comic.comicSource}">#{comic.comicTitle}</a>
-						.panel-body <a href="/view/#{comic._id}"><img height="25%" src="#{comic.panels[0].source}"></img></a>
+    each category, i in categories
+        .page-header
+            h1 #{category}
 
-	.page-header
-		h1 Fantasy
-	.row
-		each comic, i in comics
-			if comic.comicCategory == "Fantasy"
-				.col-md-4.col-sm-6.col-xs-12
-					.panel.panel-default
-						.panel-heading <a href="#{comic.comicSource}">#{comic.comicTitle}</a>
-						.panel-body <a href="/view/#{comic._id}"><img height="25%" src="#{comic.panels[0].source}"></img></a>
+        .row
+            each comic, i in comics
+                if comic.comicCategory == category
+                    .col-md-3
+                        .panel.panel-default
+                            div(style="padding-left: 10px")
+                                .col-md-8
+                                    h4 #{comic.comicTitle}
+                                .col-md-1
+                                    div(style="padding-top: 10px")
+                                    button(
+                                    type="button"
+                                    class="btn btn-xs"
+                                    data-toggle="popoverComic"
+                                    title="Additional Options"
+                                    data-image='/images/reading-list.jpg'
+                                    data-comicid="#{comic._id}"
+                                    data-username="name"
+                                    ) Options
+                                .row(align='center')
+                                    .panel-body <a href="/view/#{comic._id}"><img height="25%" src="#{comic.panels[0].source}"></img></a>

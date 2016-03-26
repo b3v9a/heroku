@@ -45,12 +45,6 @@ var ComicEditor = (function () {
             }
         });
     };
-    // NOT IN USE
-    /*
-    addPanel(req, res) {
-
-    }
-    */
     ComicEditor.prototype.deletePanel = function (req, res) {
         var comicId = req.param.comicId;
         var panelId = req.body.panelId;

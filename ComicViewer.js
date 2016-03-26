@@ -73,9 +73,7 @@ var ComicViewer = (function () {
         //});
     };
     ComicViewer.prototype.searchMatchingComics = function (req, res) {
-        console.log(req.body.query);
         var input = new RegExp(req.body.query, 'i');
-        console.log(input);
         var query = {
             "$or": [
                 { "comicTitle": input },

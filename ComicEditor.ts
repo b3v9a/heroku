@@ -53,13 +53,6 @@ class ComicEditor {
         });
     }
 
-    // NOT IN USE
-    /*
-    addPanel(req, res) {
-
-    }
-    */
-
     deletePanel(req, res) {
         var comicId = req.param.comicId;
         var panelId = req.body.panelId;

@@ -1,0 +1,16 @@
+extends layout
+
+block content
+	.row(align='center')
+		div.col-sm-6.col-md-4.col-md-offset-4
+			img(src='http://3.bp.blogspot.com/_JBHfzEovWs8/S8X3wH9vbTI/AAAAAAAAAPM/O8r2xpeeur0/s1600/batman-for-facebook.jpg', width='250', height='250')
+			h4.text-center
+				.panel.panel-default
+					.panel-body
+						h6.text-center
+								p.
+									Username: #{account.username}
+								p.
+									Firstname: #{account.firstname}
+								p.
+									Email: #{account.email}

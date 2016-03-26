@@ -7,21 +7,24 @@ block content
         .col-md-4.col-sm-6.col-xs-12
           .panel.panel-default
             .panel-heading Upload a New Panel
-            .panel-body
-              each comic, i in comics
-                if comic._id == comicID
-                  form(method="post", action="/comics/#{comic._id}/edit/addpanel")
-                    input(type="url", name="source", placeholder='source')
-                    input(type="submit", value="Upload")
-        .col-md-3
+            div(style='text-align:center')
+              .panel-body
+                each comic, i in comics
+                  if comic._id == comicID
+                    form(method="post", action="/comics/#{comic._id}/edit/addpanel")
+                      input(type="url", name="source", placeholder='source')
+                      input(type="submit", value="Upload")
+        .col-md-4.col-sm-6.col-xs-12
           .panel.panel-default
             .panel-heading Description
-            .panel-body #{comic.description}
+            div(style='text-align:center')
+              .panel-body #{comic.description}
 
-        .col-md-3
+        .col-md-4.col-sm-6.col-xs-12
           .panel.panel-default
             .panel-heading Comic Category
-            .panel-body #{comic.comicCategory}
+            div(style='text-align:center')
+              .panel-body #{comic.comicCategory}
       .row
         h1(align='center') #{comic.comicTitle}
 
@@ -31,6 +34,17 @@ block content
                 input(name="comicID", type="hidden", value=comic._id)
                 div(style='text-align:right')
                   input(value="Delete Entire Comic", type="submit")
+              if comic.publish == false
+                form#formPublish( method="post", action="/comics/#{comic._id}/edit/publish")
+                  input(name="comicID", type="hidden", value=comic._id)
+                  div(style='text-align:right')
+                    input(value="Publish", type="submit")
+              else
+               form#formUnpublish( method="post", action="/comics/#{comic._id}/edit/unpublish")
+                  input(name="comicID", type="hidden", value=comic._id)
+                  div(style='text-align:right')
+                    input(value="Unpublish", type="submit")
+              -var numPanels = comic.panels.length
               each panel, index in comic.panels
                 .col-md-4.col-sm-6.col-xs-12
                   .panel.panel-info
@@ -39,12 +53,14 @@ block content
                         img(src='#{panel.source}', width='170', height='170')
                         form#formSwapPanel( method="post", action="/comics/#{comic._id}/edit/swappanel")
                           input(name="index", type="hidden", value=index)
-                          input(value="Swap", type="submit")
+                          if (index + 1) < numPanels
+                            input(value="Swap Right", type="submit")
+                          else
+                            input(value="Swap Left", type="submit")
                         -var cid = [panel._id]
                         each val in cid
                           form#formDeletepanel( method="post", action="/comics/#{comic._id}/edit/deletepanel")
                             input(name="panelID", type="hidden", value=val)
                             input(value="Delete this panel", type="submit")
-
     script( src='//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js' )
     script( src='//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js' )

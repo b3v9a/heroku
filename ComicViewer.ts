@@ -85,9 +85,7 @@ class ComicViewer {
     }
 
     searchMatchingComics(req, res) {
-        console.log(req.body.query);
         var input = new RegExp(req.body.query, 'i');
-        console.log(input);
         var query = {
             "$or": [
                 {"comicTitle": input},

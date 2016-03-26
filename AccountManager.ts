@@ -62,8 +62,8 @@ class AccountManager{
                         "username": username,
                         "userPassword": userPassword,
                         "firstname": firstname,
-                        "email": email
-
+                        "email": email,
+                        "readingList": []
                     }, function (err, doc) {
                         if (err) {
                             res.send("There was a problem adding the information to the database.");
@@ -79,7 +79,6 @@ class AccountManager{
 
     getAccount(req, res) {
         var currentUser = req.username;
-        console.log(currentUser);
         globalCollection.findOne( {"username": currentUser}, {}, function (err, user) {
             if (err) {
                 return res.send("There was an error processing your request, please try again")
