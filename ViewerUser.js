@@ -22,4 +22,3 @@ var ViewerUser = (function () {
     };
     return ViewerUser;
 }());
-//# sourceMappingURL=ViewerUser.js.map

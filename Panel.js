@@ -11,4 +11,3 @@ var Panel = (function () {
     };
     return Panel;
 }());
-//# sourceMappingURL=Panel.js.map

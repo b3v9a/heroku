@@ -63,7 +63,9 @@ class AccountManager{
                         "userPassword": userPassword,
                         "firstname": firstname,
                         "email": email,
-                        "readingList": []
+                        "readingList": [],
+                        "upvotes": [],
+                        "ratings": []
                     }, function (err, doc) {
                         if (err) {
                             res.send("There was a problem adding the information to the database.");

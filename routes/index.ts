@@ -11,6 +11,11 @@ class Router {
     start() {
 
         var express = require('express');
+
+        // passport variables
+        var passport = require('passport');
+        var Account = require('../Account');
+
         var router = express.Router();
 
         var editor = require('../ComicEditor');
@@ -81,7 +86,7 @@ class Router {
                 for (var i=0; i<account.readingList.length; i++) {
                     readinglist[i] = ObjectID(readinglist[i]);
                 }
-                
+
                 // find all the comics with IDs that match whatever is in the user's reading list
                 comicCollection.find({_id: {$in: readinglist}}, {}, function(err, readingList) {
                     if (err) {
@@ -193,7 +198,12 @@ class Router {
                                 "source": firstpanel,
                                 "position": 1
                             }],
-                            "comments": []
+                            "comments": [],
+                            "rating": {
+                               "score": 0,
+                               "sumallscores": 0,
+                               "numbervotes": 0
+                           }
 
                         }, function (err, doc) {
                             if (err) {
@@ -542,34 +552,56 @@ class Router {
             });
         });
 
+        // PASSPORT
+        /* GET Register */
+        router.get('/register', function (req, res) {
+            res.render('register', {});
+        }); 
 
-        /* GET login page */
+        /* POST Register */
+        router.post('/register', function(req, res, next) {
+            Account.register(new Account({ username : req.body.username, email : req.body.email }), req.body.password, function(err, account) {
+                if (err) {
+                  return res.render("register", {info: "Sorry. That username already exists. Try again."});
+                }
+
+                passport.authenticate('local')(req, res, function () {
+                    req.session.save(function (err) {
+                        if (err) {
+                            return next(err);
+                        }
+                        res.redirect('/');
+                    });
+                });
+            });
+        });
+
+        /* GET Login */
         router.get('/login', function(req, res) {
-            res.render('login', { });
+            res.render('login', { user : req.user, message : req.flash('error')});
+            res.render('layout', { user : req.user, message : req.flash('error')});            
         });
 
-        /* HANDLE user login */
-        router.post('/login', function(req, res) {
-            accountManager.attemptLogin(req, res);
+        /* POST Login */
+        router.post('/login', passport.authenticate('local', { failureRedirect: '/login', failureFlash: true }), function(req, res, next) {
+            req.session.save(function (err) {
+                if (err) {
+                    return next(err);
+                }
+                res.redirect('/');
+            });
         });
 
-
-        /* GET Registration Page */
-        router.get('/signup', function(req, res){
-            res.render('register',{});
+        /* GET Logout */
+        router.get('/logout', function(req, res, next) {
+            req.logout();
+            req.session.save(function (err) {
+                if (err) {
+                    return next(err);
+                }
+                res.redirect('/');
+            });
         });
-
-        /* Handle Registration POST
-         * @param username - the username for the account to be created
-         * @param password - the password for the account
-         * @param firstname - the first name of the user
-         * @param email - the email address of the user
-         * */
-        router.post('/signup', function(req, res) {
-            accountManager.createAccount(req, res)
-        });
-
-
 
         /* GET Account page FIXING.
          * @param username (as exists in the database)
@@ -703,20 +735,15 @@ class Router {
         });
 
 
-        /* GET edit page */
-        //router.get('/edit', function (req, res) {
-        //    res.render('edit', {});
-        //});
 
         router.get('/search', function(req, res) {
             res.render('search');
         });
 
 
-        /* Handle Logout */
-        router.get('/signout', function(req, res) {
-            res.redirect('/');
-        });
+
+
+
 
         module.exports = router;
     }

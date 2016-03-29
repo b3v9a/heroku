@@ -6,7 +6,9 @@ block content
       .row
         .col-md-4.col-sm-6.col-xs-12
           .panel.panel-default
-            .panel-heading Upload a New Panel
+            .panel-heading(style='font-size:150%;')
+              b.
+                Upload a New Panel
             div(style='text-align:center')
               .panel-body
                 each comic, i in comics
@@ -16,17 +18,21 @@ block content
                       input(type="submit", value="Upload")
         .col-md-4.col-sm-6.col-xs-12
           .panel.panel-default
-            .panel-heading Description
+            .panel-heading(style='font-size:150%;')
+              b.
+                Description
             div(style='text-align:center')
               .panel-body #{comic.description}
 
         .col-md-4.col-sm-6.col-xs-12
           .panel.panel-default
-            .panel-heading Comic Category
+            .panel-heading(style='font-size:150%;')
+              b.
+                Comic Category
             div(style='text-align:center')
               .panel-body #{comic.comicCategory}
       .row
-        h1(align='center') #{comic.comicTitle}
+        h1(align='center', style='font-size:500%;') #{comic.comicTitle}
 
       body
         .row
@@ -44,6 +50,7 @@ block content
                   input(name="comicID", type="hidden", value=comic._id)
                   div(style='text-align:right')
                     input(value="Unpublish", type="submit")
+              hr
               -var numPanels = comic.panels.length
               each panel, index in comic.panels
                 .col-md-4.col-sm-6.col-xs-12

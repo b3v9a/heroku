@@ -49,7 +49,9 @@ var AccountManager = (function () {
                         "userPassword": userPassword,
                         "firstname": firstname,
                         "email": email,
-                        "readingList": []
+                        "readingList": [],
+                        "upvotes": [],
+                        "ratings": []
                     }, function (err, doc) {
                         if (err) {
                             res.send("There was a problem adding the information to the database.");
@@ -106,4 +108,3 @@ var AccountManager = (function () {
 var accountManager = new AccountManager();
 accountManager.start();
 module.exports = accountManager;
-//# sourceMappingURL=AccountManager.js.map

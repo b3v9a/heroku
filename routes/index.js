@@ -8,13 +8,12 @@ var Router = (function () {
     }
     Router.prototype.start = function () {
         var express = require('express');
-
         // passport variables
         var passport = require('passport');
         var Account = require('../Account');
-
         var router = express.Router();
         var editor = require('../ComicEditor');
+        var accountManager = require('../AccountManager');
         var viewer = require('../ComicViewer');
         var mongo = require('mongodb');
         var monk = require('monk');
@@ -169,7 +168,12 @@ var Router = (function () {
                                     "source": firstpanel,
                                     "position": 1
                                 }],
-                            "comments": []
+                            "comments": [],
+                            "rating": {
+                                "score": 0,
+                                "sumallscores": 0,
+                                "numbervotes": 0
+                            }
                         }, function (err, doc) {
                             if (err) {
                                 res.send("Error adding new Comic");
@@ -466,20 +470,17 @@ var Router = (function () {
                 }
             });
         });
-
         // PASSPORT
         /* GET Register */
         router.get('/register', function (req, res) {
             res.render('register', {});
-        }); 
-
+        });
         /* POST Register */
-        router.post('/register', function(req, res, next) {
-            Account.register(new Account({ username : req.body.username }), req.body.password, function(err, account) {
+        router.post('/register', function (req, res, next) {
+            Account.register(new Account({ username: req.body.username, email: req.body.email }), req.body.password, function (err, account) {
                 if (err) {
-                  return res.render("register", {info: "Sorry. That username already exists. Try again."});
+                    return res.render("register", { info: "Sorry. That username already exists. Try again." });
                 }
-
                 passport.authenticate('local')(req, res, function () {
                     req.session.save(function (err) {
                         if (err) {
@@ -490,15 +491,13 @@ var Router = (function () {
                 });
             });
         });
-
         /* GET Login */
-        router.get('/login', function(req, res) {
-            res.render('login', { user : req.user, message : req.flash('error')});
-            res.render('layout', { user : req.user, message : req.flash('error')});            
+        router.get('/login', function (req, res) {
+            res.render('login', { user: req.user, message: req.flash('error') });
+            res.render('layout', { user: req.user, message: req.flash('error') });
         });
-
         /* POST Login */
-        router.post('/login', passport.authenticate('local', { failureRedirect: '/login', failureFlash: true }), function(req, res, next) {
+        router.post('/login', passport.authenticate('local', { failureRedirect: '/login', failureFlash: true }), function (req, res, next) {
             req.session.save(function (err) {
                 if (err) {
                     return next(err);
@@ -506,9 +505,8 @@ var Router = (function () {
                 res.redirect('/');
             });
         });
-
         /* GET Logout */
-        router.get('/logout', function(req, res, next) {
+        router.get('/logout', function (req, res, next) {
             req.logout();
             req.session.save(function (err) {
                 if (err) {
@@ -517,7 +515,6 @@ var Router = (function () {
                 res.redirect('/');
             });
         });
-
         /* GET Account page FIXING.
          * @param username (as exists in the database)
          * */
@@ -635,14 +632,9 @@ var Router = (function () {
         router.post('/search', function (req, res) {
             viewer.searchMatchingComics(req, res);
         });
-        /* GET edit page */
-        //router.get('/edit', function (req, res) {
-        //    res.render('edit', {});
-        //});
         router.get('/search', function (req, res) {
             res.render('search');
         });
-
         module.exports = router;
     };
     return Router;

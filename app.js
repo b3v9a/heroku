@@ -11,19 +11,16 @@ var Application = (function () {
         var logger = require('morgan');
         var cookieParser = require('cookie-parser');
         var bodyParser = require('body-parser');
-
         // passport variables
         var mongoose = require('mongoose');
         var passport = require('passport');
         var LocalStrategy = require('passport-local').Strategy;
         var flash = require('connect-flash');
-
         // adding links to db
         // TODO remove these once DBManager implementation is complete
         var mongo = require('mongodb');
         var monk = require('monk');
         var db = monk('mongodb://admin:sloth@ds051635.mongolab.com:51635/sloth310');
-
         var routes = require('./routes/index');
         var users = require('./routes/users');
         var app = express();
@@ -36,7 +33,6 @@ var Application = (function () {
         app.use(bodyParser.json());
         app.use(bodyParser.urlencoded({ extended: false }));
         app.use(cookieParser());
-
         // passport config
         var Account = require('./Account');
         mongoose.connect('mongodb://admin:sloth@ds051635.mongolab.com:51635/sloth310');
@@ -51,15 +47,13 @@ var Application = (function () {
         passport.use(new LocalStrategy(Account.authenticate()));
         passport.serializeUser(Account.serializeUser());
         passport.deserializeUser(Account.deserializeUser());
-        app.use(function(req, res, next) {
+        app.use(function (req, res, next) {
             res.locals.user = req.user;
             next();
         });
-
         app.use(express.static(path.join(__dirname, 'public')));
         app.use('/', routes);
         app.use('/users', users);
-
         // catch 404 and forward to error handler
         app.use(function (req, res, next) {
             var err = new Error('Not Found');

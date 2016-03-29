@@ -42,4 +42,3 @@ var Comic = (function () {
     };
     return Comic;
 }());
-//# sourceMappingURL=Comic.js.map

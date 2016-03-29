@@ -60,4 +60,3 @@ var DBManager = (function () {
 var dbmanager = new DBManager();
 dbmanager.start();
 module.exports = DBManager;
-//# sourceMappingURL=DBManager.js.map

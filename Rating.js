@@ -9,4 +9,3 @@ var Rating = (function () {
     }
     return Rating;
 }());
-//# sourceMappingURL=Rating.js.map
