@@ -38,6 +38,8 @@ var Application = (function () {
         app.use(cookieParser());
 
         // passport config
+        var Account = require('./Account');
+        mongoose.connect('mongodb://admin:sloth@ds051635.mongolab.com:51635/sloth310');
         app.use(require('express-session')({
             secret: 'slothyslothsloth',
             resave: false,
@@ -46,11 +48,13 @@ var Application = (function () {
         app.use(passport.initialize());
         app.use(flash());
         app.use(passport.session());
-        var Account = require('./Account');
         passport.use(new LocalStrategy(Account.authenticate()));
         passport.serializeUser(Account.serializeUser());
         passport.deserializeUser(Account.deserializeUser());
-        mongoose.connect('mongodb://admin:sloth@ds051635.mongolab.com:51635/sloth310');
+        app.use(function(req, res, next) {
+            res.locals.user = req.user;
+            next();
+        });
 
         app.use(express.static(path.join(__dirname, 'public')));
         app.use('/', routes);

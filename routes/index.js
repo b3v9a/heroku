@@ -494,6 +494,7 @@ var Router = (function () {
         /* GET Login */
         router.get('/login', function(req, res) {
             res.render('login', { user : req.user, message : req.flash('error')});
+            res.render('layout', { user : req.user, message : req.flash('error')});            
         });
 
         /* POST Login */
