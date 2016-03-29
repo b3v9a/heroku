@@ -76,7 +76,7 @@ var ComicEditor = (function () {
         // Get our form values
         var commentText = req.body.comment;
         //var userId = req.body.userId;
-        var username = "test";
+        var username = "name";
         var comicId = req.body.comicId;
         console.log(comicId);
         globalCollection.findOne({ _id: comicId }, {}, function (err, comic) {
@@ -137,37 +137,6 @@ var ComicEditor = (function () {
             }
         });
     };
-    //changeScore(req, res) {
-    //
-    //    //var userId = req.body.userId;
-    //    var username = "test";
-    //    var comicId = req.body.comicid;
-    //
-    //    globalCollection.findOne({_id: comicId}, {}, function (err, comic) {
-    //        if (err) {
-    //            res.send("Cannot find comic: " + err)
-    //        } else {
-    //            // initialize comic here
-    //            var comic = comic;
-    //            var commentId = Number(req.body.commentid);
-    //            var delta = Number(req.body.delta);
-    //
-    //            for (var i=0;i<comic.comments.length; i++) {
-    //                if(comic.comments[i]._id === commentId) {
-    //                    comic.comments[i].score += delta;
-    //                }
-    //            }
-    //
-    //            globalCollection.update({_id: comic._id}, comic, function(err, result) {
-    //                if (err) {
-    //                    res.send("Unable to update score: " + err)
-    //                } else {
-    //                    res.redirect(comicId)
-    //                }
-    //            })
-    //        }
-    //    });
-    //}
     ComicEditor.prototype.changeScore = function (req, res) {
         //var userId = req.body.userId;
         var username = "test";
@@ -292,7 +261,7 @@ var ComicEditor = (function () {
                         res.send("Unable to add comment: " + err);
                     }
                     else {
-                        res.redirect(comicId);
+                        res.send("Comment successfully added!");
                     }
                 });
             }

@@ -27,6 +27,7 @@ block content
                             div(style="width: 100%")
                             .col-md-3
                                 h4 #{comment.text} --  Score: #{comment.score}
+                                //<a href="/community/#{comment.username}">#{comment.username}</a>
                             .col-md-1
                                 - var voted = alreadyupvoted(upvotes);
                                 if voted == 1
@@ -44,7 +45,7 @@ block content
                                         input(type='hidden',name='buttonval',value= 1)
                                         input(type='hidden', name='comicid', value=comic._id)
                                         button(class='btn btn-primary btn-xs', type='submit') Λ
-                                if comment.username == "test"
+                                if comment.username == "name"
                                     form#fordeleteComment( method="post", action="/view/deletecomment")
                                         input(type='hidden',name='commentid',value=comment._id)
                                         input(type='hidden', name='comicid', value=comic._id)
@@ -71,10 +72,3 @@ block content
                             button(class='btn btn-xs btn-primary btn-block', type='submit') Comment
     .row(align='center')
         a(href='#top') Go to top
-    .row
-        each account in accounts
-            <a href="/community/#{account.username}">#{account.username}</a>
-
-
-
-

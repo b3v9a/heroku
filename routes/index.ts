@@ -194,10 +194,7 @@ class Router {
                                 "position": 1
                             }],
                             "comments": []
-<<<<<<< HEAD
-=======
 
->>>>>>> master
                         }, function (err, doc) {
                             if (err) {
                                 res.send("Error adding new Comic");
@@ -454,36 +451,7 @@ class Router {
             })
         });
 
-<<<<<<< HEAD
-        router.post('/comics/view/')
-
-        // NOTE: this method is likely not needed; use '/comics/:id/view/all' instead and display
-        //      only the first comic
-        /* GET first panel from a comic */
-        // @param comicId
-        router.get('/comics/:id/view/firstpanel', function(req, res) {
-            // will add if needed
-        });
-
-
-
-
-        /* GET all panels from a comic DELETE LATER */
-        // @param comicId - ID for comic
-        /*router.get('/comics/:id/view/all', function (req, res) {
-            viewer.getPanels(cid, function (error, panels) {
-                res.render('edit', {
-                    panels: panels,
-                    title: "Edit Comic Here!"
-                })
-            });
-        });
-        */
-
-        /* GET all panels from a comic FIXING */
-=======
         /* GET all panels from a comic DONE. */
->>>>>>> master
         // @param comicId - ID for comic
         router.get('/comics/:id/view/all', function (req, res) {
             var collection = db.get('comiccollection');
@@ -498,31 +466,13 @@ class Router {
         });
 
 
-<<<<<<< HEAD
-		/* Add a comment to a comic
-		* @param comicId - the ID of the comic which the comment belongs to
-		* @param userId - the ID of the user who is posting the comment
-		* @param comment - the text of the comment to be stored
-		* */
-		router.post('/view/:id/addcomment', function (req, res) {
-=======
         /* Add a comment to a comic
          * @param comicId - the ID of the comic which the comment belongs to
          * @param userId - the ID of the user who is posting the comment
          * @param comment - the text of the comment to be stored
          * */
         router.post('/comics/:id/view/addcomment', function (req, res) {
->>>>>>> master
             editor.addComment(req, res)
-        });
-
-        /* Add a comment to a comic
-         * @param comicId - the ID of the comic which the comment belongs to
-         * @param userId - the ID of the user who is posting the comment
-         * @param comment - the text of the comment to be stored
-         * */
-        router.post('/view/deletecomment', function (req, res) {
-            editor.deleteComment(req, res)
         });
 
         /* Update a comment
@@ -536,15 +486,9 @@ class Router {
         });
 
         /* Add a rating to a comic
-<<<<<<< HEAD
-        * @param comicId - the ID of the comic which the rating belongs to
-        * @param userId - the ID of the user who is adding the rating
-        * @param rating - a number i1 through 5) representing the desired rating
-=======
          * @param comicId - the ID of the comic which the rating belongs to
          * @param userId - the ID of the user who is adding the rating
          * @param rating - a number (1 through 5) representing the desired rating
->>>>>>> master
          */
         router.post('/comics/:id/view/addrating', function(req, res) {
             editor.addRating(req, res)
@@ -559,6 +503,45 @@ class Router {
         router.post('/comics/:id/view/updatecomment', function( req, res) {
             editor.updateComment(req, res)
         });
+
+        //Josh's view methods
+        router.post('/view/changescore', function(req, res) {
+            editor.changeScore(req,res);
+        });
+
+        router.post('/view/deletecomment', function (req, res) {
+            editor.deleteComment(req, res)
+        });
+
+        router.post('/view/:id/addcomment', function (req, res) {
+            editor.addComment(req, res)
+        });
+
+        //get view apge
+        router.get('/view/:id', function(req, res) {
+            var collection = db.get('comiccollection');
+            var users = db.get('usercollection');
+            collection.findOne({_id: req.params.id}, {}, function (err, comic) {
+                if (err) {
+                    res("Comic not found")
+                } else {
+                    users.findOne({username: "name"}, {}, function (err, user) {
+                        if (err) {
+                            res("user not found")
+                        } else {
+                            res.render('view', {
+                                "user": user,
+                                "upvotes": user.upvotes,
+                                "comic": comic,
+                                "comments": comic.comments.reverse(),
+                                "panels": comic.panels
+                            })
+                        }
+                    });
+                }
+            });
+        });
+
 
         /* GET login page */
         router.get('/login', function(req, res) {
@@ -601,59 +584,6 @@ class Router {
             });
         });
 
-<<<<<<< HEAD
-        /* POST to Add Panel DONE.
-         * @param comicId - the ID of the comic which the panel should be added to
-         * @param source - a URL where the image representing the panel is located
-         * */
-        router.post('/view/changescore', function(req, res) {
-            editor.changeScore(req,res);
-        });
-
-        ///* GET View Page */
-        //router.get('/view/:id', function(req, res){
-        //    var collection = db.get('comiccollection');
-        //    // collection.find({}, {},  function(e, docs){
-        //    //     res.render('view',{
-        //    //         "comicID" : req.params.id,
-        //    //         "comics" : docs
-        //    //     });
-        //    collection.findOne({_id: req.params.id}, {}, function(err, comic) {
-        //        if (err) {
-        //            res("Comic not found")
-        //        } else {
-        //            res.render('view', {
-        //                "comic": comic,
-        //                "comments": comic.comments.reverse(),
-        //                "panels": comic.panels
-        //            })
-        //        }
-        //    });
-        //});
-
-        /* GET View Page */
-        router.get('/view/:id', function(req, res){
-            var collection = db.get('comiccollection');
-            var users = db.get('usercollection');
-            collection.findOne({_id: req.params.id}, {}, function(err, comic) {
-                if (err) {
-                    res("Comic not found")
-                } else {
-                    users.findOne({username:"name"}, {}, function(err, user) {
-                        if (err) {
-                            res("user not found")
-                        } else {
-                            res.render('view', {
-                                "user": user,
-                                "upvotes": user.upvotes,
-                                "comic": comic,
-                                "comments": comic.comments.reverse(),
-                                "panels": comic.panels
-                            })
-                        }
-                    });
-                }
-=======
         /* POST to Account Page DONE. */
         router.post('/account/:username/edit', function(req, res) {
             var ObjectID = require('mongodb').ObjectID;
@@ -717,7 +647,6 @@ class Router {
                         })
                     }
                 });
->>>>>>> master
             });
         });
 
