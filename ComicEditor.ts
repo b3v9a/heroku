@@ -8,6 +8,7 @@
 var globalMonk = require('monk');
 var globalDB = globalMonk('mongodb://admin:sloth@ds051635.mongolab.com:51635/sloth310');
 var globalCollection = globalDB.get('comiccollection');
+var users = globalDB.get('usercollection');
 
 class ComicEditor {
 
@@ -84,36 +85,164 @@ class ComicEditor {
     addComment(req, res) {
         // Get our form values
         var commentText = req.body.comment;
-        var userId = req.body.userId;
+        //var userId = req.body.userId;
+        var username = "test";
         var comicId = req.body.comicId;
+        console.log(comicId);
 
-        globalCollection.find({_id: comicId}, {}, function (err, result) {
+        globalCollection.findOne({_id: comicId}, {}, function (err, comic) {
             if (err) {
                 res.send("Cannot find comic: " + err)
             } else {
                 // initialize comic here
-                var comic = result;
-                var numComments = comic.comments.length;
+                var comic = comic;
                 // TODO figure out a way to give a unique ID to each comment
                 var randomizedId = Math.floor((Math.random() * 10000));
                 // add new comment to end of comments list
-                comic.comments[numComments] = {
+                comic.comments.push({
                     _id: randomizedId,
                     text: commentText,
-                    userId: userId,
+                    username: username,
+                    score: 0,
                     date: new Date()
-                };
+                });
 
-                globalCollection.upsert(comic, {}, function(err, result) {
+                globalCollection.update({_id: comic._id}, comic, function(err, result) {
                     if (err) {
                         res.send("Unable to add comment: " + err)
                     } else {
-                        res.send("Comment successfully added!")
+                        res.redirect('/view/' + comicId)
                     }
                 })
             }
         });
     }
+
+    deleteComment(req, res) {
+
+        //var userId = req.body.userId;
+        var username = "name";
+        var comicId = req.body.comicid;
+
+        globalCollection.findOne({_id: comicId}, {}, function (err, comic) {
+            if (err) {
+                res.send("Cannot find comic: " + err)
+            } else {
+                // initialize comic here
+                var comic = comic;
+                // TODO figure out a way to give a unique ID to each comment
+                var i = 0;
+                for(i=0; i < comic.comments.length ; i++){
+                    if(Number(comic.comments[i]._id) === Number(req.body.commentid)) {
+                        comic.comments.splice(i, 1);
+                        break;
+                    }
+                }
+
+                globalCollection.update({_id: comic._id}, comic, function(err, result) {
+                    if (err) {
+                        res.send("Unable to add comment: " + err)
+                    } else {
+
+                        res.redirect('/view/' + comicId)
+                    }
+                })
+            }
+        });
+    }
+
+    //changeScore(req, res) {
+    //
+    //    //var userId = req.body.userId;
+    //    var username = "test";
+    //    var comicId = req.body.comicid;
+    //
+    //    globalCollection.findOne({_id: comicId}, {}, function (err, comic) {
+    //        if (err) {
+    //            res.send("Cannot find comic: " + err)
+    //        } else {
+    //            // initialize comic here
+    //            var comic = comic;
+    //            var commentId = Number(req.body.commentid);
+    //            var delta = Number(req.body.delta);
+    //
+    //            for (var i=0;i<comic.comments.length; i++) {
+    //                if(comic.comments[i]._id === commentId) {
+    //                    comic.comments[i].score += delta;
+    //                }
+    //            }
+    //
+    //            globalCollection.update({_id: comic._id}, comic, function(err, result) {
+    //                if (err) {
+    //                    res.send("Unable to update score: " + err)
+    //                } else {
+    //                    res.redirect(comicId)
+    //                }
+    //            })
+    //        }
+    //    });
+    //}
+
+    changeScore(req, res) {
+
+        //var userId = req.body.userId;
+        var username = "test";
+        var comicId = req.body.comicid;
+
+        globalCollection.findOne({_id: comicId}, {}, function (err, comic) {
+            if (err) {
+                res.send("Cannot find comic: " + err)
+            } else {
+                // initialize comic here
+                var comic = comic;
+                var commentId = Number(req.body.commentid);
+                var buttonval = Number(req.body.buttonval);
+                var delta = Number(req.body.delta);
+
+                for (var i=0;i<comic.comments.length; i++) {
+                    if(comic.comments[i]._id === commentId) {
+                        comic.comments[i].score += delta;
+                    }
+                }
+
+                globalCollection.update({_id: comic._id}, comic, function(err, result) {
+                    if (err) {
+                        res.send("Unable to update score: " + err)
+                    } else {
+                        //CURRENTLY USERNAME IS NOT DYNAMIC
+                        users.findOne({username : "name"}, {}, function (err, user) {
+                            if (err) {
+                                res.send("Cannot find comic: " + err)
+                            } else {
+                                var inArray = true;
+                                for(var i = 0; i<user.upvotes.length ; i++){
+                                    if(user.upvotes[i]._id === commentId){
+                                        if(user.upvotes[i].score === -delta && user.upvotes[i].score === buttonval ) {user.upvotes[i].score = 0; inArray = false; break;}
+                                        else {user.upvotes[i].score = delta; inArray = false; break;}
+                                    }
+                                }
+                                if(inArray) {
+                                    user.upvotes.push({
+                                        _id: commentId,
+                                        score: delta
+                                    });
+                                }
+                                users.update({username: "name"}, user, {upsert : true}, function(err, result) {
+                                    if (err) {
+                                        res.send("Unable to update score: " + err)
+                                    } else {
+                                        res.redirect(comicId)
+                                    }
+                                })
+                            }
+                        })
+                    }
+                })
+            }
+        });
+    }
+
+
 
     updateComment(req, res) {
         // Get our form values
@@ -175,7 +304,7 @@ class ComicEditor {
                     if (err) {
                         res.send("Unable to add comment: " + err)
                     } else {
-                        res.send("Comment successfully added!")
+                        res.redirect(comicId)
                     }
                 })
             }

@@ -5,29 +5,12 @@ block content
 		h1 Search Comics
 	.jumbotron
 		.row
-			.col-md-2.col-md-offset-1
-				form( method="post", action="/search")
-					h4 Category
-				.checkbox.text-center
-				label
-				input(type='radio', value='All', checked)
-				|     All Categories
-				br
-				label
-				input(type='radio', value='Humor')
-				|     Humor
-				br
-				label
-				input(type='radio', value='Fantasy')
-				|     Fantasy
-			.col-md-6
-				.row
-					br
-					form(name="searchComics",method="post")
-						.col-md-8
-							input(type='text' name='query' class='form-control' placeholder='Enter your search here...', required)
-						.col-md-4
-							button(class='btn btn-md btn-primary btn-block', type='submit') Search
+			.col-md-6.col-md-offset-1
+				form(name="searchComics",method="post")
+					.col-md-8
+						input(type='text' name='query' class='form-control' placeholder='Enter your search here...', required)
+					.col-md-4
+						button(class='btn btn-md btn-primary btn-block', type='submit') Search
 
 
 	.row

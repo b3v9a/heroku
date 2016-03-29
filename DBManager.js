@@ -56,7 +56,7 @@ var DBManager = (function () {
         });
     };
     return DBManager;
-}());
+})();
 var dbmanager = new DBManager();
 dbmanager.start();
 module.exports = DBManager;

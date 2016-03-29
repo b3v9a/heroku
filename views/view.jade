@@ -2,16 +2,79 @@ extends layout
 
 block content
     .row(align='center')
-        h2#top #{comic.comicTitle} Comic!
-            br.
-            <a href="/comics/#{comic._id}/view/all">EDIT PANEL</a>
-            each panel in panels
-                <br><img src="#{panel.source}"></img>
+        .col-md-8
+            h2#top #{comic.comicTitle} Comic!
+                br.
+                <a href="/comics/#{comic._id}/view/all">EDIT PANEL</a>
+                each panel in panels
+                    <br><img src="#{panel.source}"></img>
+        .col.md-4
+            h1.text-center.comment-title Comments
+                .row
+                    if comments != undefined
+                        each comment in comments
+                            -var alreadyupvoted = function(upvotes){
+                            - var i = 0;
+                            - for(i = 0; i<upvotes.length ; i++){
+                            -   if (upvotes.length !== 0) {
+                            -       if(upvotes[i]._id === comment._id){
+                            -       return upvotes[i].score;
+                            -       }
+                            -    }
+                            -   }
+                            - return 0;
+                            - }
+                            div(style="width: 100%")
+                            .col-md-3
+                                h4 #{comment.text} --  Score: #{comment.score}
+                            .col-md-1
+                                - var voted = alreadyupvoted(upvotes);
+                                if voted == 1
+                                    form#forUpvote( method="post", action="/view/changescore")
+                                        input(type='hidden',name='delta',value= -1)
+                                        input(type='hidden',name='buttonval',value= 1)
+                                        input(type='hidden',name='commentid',value=comment._id)
+                                        input(type='hidden',name='voted',value=voted)
+                                        input(type='hidden', name='comicid', value=comic._id)
+                                        button(class='btn btn-success btn-xs', type='submit') Λ
+                                else
+                                    form#forUpvote( method="post", action="/view/changescore")
+                                        input(type='hidden',name='delta',value=1)
+                                        input(type='hidden',name='commentid',value=comment._id)
+                                        input(type='hidden',name='buttonval',value= 1)
+                                        input(type='hidden', name='comicid', value=comic._id)
+                                        button(class='btn btn-primary btn-xs', type='submit') Λ
+                                if comment.username == "test"
+                                    form#fordeleteComment( method="post", action="/view/deletecomment")
+                                        input(type='hidden',name='commentid',value=comment._id)
+                                        input(type='hidden', name='comicid', value=comic._id)
+                                        button(class='btn btn-primary btn-xs', type='submit') x
+                                if voted == -1
+                                    form#forDownvote( method="post", action="/view/changescore")
+                                        input(type='hidden',name='delta',value= 1)
+                                        input(type='hidden',name='buttonval',value= -1)
+                                        input(type='hidden',name='commentid',value=comment._id)
+                                        input(type='hidden', name='comicid', value=comic._id)
+                                        button(class='btn btn-danger btn-xs', type='submit') V
+                                else
+                                    form#forDownvote( method="post", action="/view/changescore")
+                                        input(type='hidden',name='delta',value=-1)
+                                        input(type='hidden',name='buttonval',value= -1)
+                                        input(type='hidden',name='commentid',value=comment._id)
+                                        input(type='hidden', name='comicid', value=comic._id)
+                                        button(class='btn btn-primary btn-xs', type='submit') V
+                    .col-md-4
+                        -var comicId = comic._id
+                        form#forAddComment( method="post", action="/view/#{comic._id}/addcomment")
+                            input(type='text', name='comment', class='form-control input-sm', placeholder='comment',required,autofocus)
+                            input(type='hidden', name='comicId', value=comicId)
+                            button(class='btn btn-xs btn-primary btn-block', type='submit') Comment
     .row(align='center')
         a(href='#top') Go to top
     .row
         each account in accounts
             <a href="/community/#{account.username}">#{account.username}</a>
+
 
 
 

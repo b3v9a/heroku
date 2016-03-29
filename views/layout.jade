@@ -64,15 +64,17 @@ html
           li: a( href="/comics/drafts") Drafts
           li: a( href="/account/:username") Account
           li: a( href="/comics/addcomic") Add Comic
-          li: a( href="/signup") Register
+          li: a( href="/register") Register
           li: a( href="/readinglist") Reading List
-        ul.nav.navbar-nav.navbar-right
-          form#formLogin(name="login", method="post", action="/login")
-            .form-group.col-sm-3
-              input(type='text', name='username' class='form-control', placeholder='username', required, autofocus)
-            .form-group.col-sm-3
-              input(type='password', name='password' class='form-control', placeholder='password', required)
-            .form-group.col-sm-6
-              button(class='btn btn-md btn-primary', type='submit') Login
+        ul.nav.pull-right
+          li.dropdown
+            a.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-expanded="false" ) Login 
+              span.caret
+            ul.dropdown-menu( role="menu" )
+              form(role='form', action="/login",method="post")
+                .form-group
+                  input.form-control(type='text', name="username", placeholder=' Username')
+                  input.form-control(type='password', name="password", placeholder='Password')
+                  button.btn.btn-default(type='submit') Login
 
   block content

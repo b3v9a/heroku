@@ -2,27 +2,41 @@ extends layout
 
 block content
     each category, i in categories
-        .page-header
-            h1 #{category}
+        if (category.active === true)
+            -var numComics = 0
+            .page-header
+                h2 <a href="/view/category/#{category.urlname}">#{category.name}</a>
 
-        .row
-            each comic, i in comics
-                if comic.comicCategory == category
-                    .col-md-3
-                        .panel.panel-default
-                            div(style="padding-left: 10px")
-                                .col-md-8
-                                    h4 #{comic.comicTitle}
-                                .col-md-1
-                                    div(style="padding-top: 10px")
-                                    button(
-                                    type="button"
-                                    class="btn btn-xs"
-                                    data-toggle="popoverComic"
-                                    title="Additional Options"
-                                    data-image='/images/reading-list.jpg'
-                                    data-comicid="#{comic._id}"
-                                    data-username="name"
-                                    ) Options
-                                .row(align='center')
-                                    .panel-body <a href="/view/#{comic._id}"><img height="25%" src="#{comic.panels[0].source}"></img></a>
+            .row
+                each comic, i in comics
+                    if comic.comicCategory == category.name
+                        -numComics++
+                            if (numComics < 5)
+                                .col-md-3
+                                    .panel.panel-default
+                                        div(style="padding-left: 10px")
+                                            .col-md-8
+                                                h4 #{comic.comicTitle}
+                                            .col-md-1
+                                                div(style="padding-top: 10px")
+                                                button(
+                                                type="button"
+                                                class="btn btn-xs"
+                                                data-toggle="popoverComic"
+                                                title="Additional Options"
+                                                data-image='/images/reading-list.jpg'
+                                                data-comicid="#{comic._id}"
+                                                data-username="name"
+                                                ) Options
+                                            .row(align='center')
+                                                .panel-body <a href="/view/#{comic._id}"><img height="25%" src="#{comic.panels[0].source}"></img></a>
+                            else
+            .row
+                if (numComics > 4)
+                    div(style="padding-left: 10px")
+                        a(href="/view/category/#{category.urlname}")
+                            button(
+                            type="button"
+                            class="btn btn-s"
+                            title="See all >>"
+                            ) See all >>
