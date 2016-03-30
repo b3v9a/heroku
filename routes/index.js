@@ -90,6 +90,13 @@ var Router = (function () {
                 }
             });
         });
+        //POST for addrating
+        router.post('/addrating', function (req, res) {
+            var user = String(req.session.passport.user);
+            if (user != "undefined") {
+                editor.addrating(req, res);
+            }
+        });
         /* GET reading list page
          * @param - username
          * */
@@ -721,6 +728,7 @@ var Router = (function () {
         module.exports = router;
     };
     return Router;
-}());
+})();
 var router = new Router();
 router.start();
+//# sourceMappingURL=index.js.map

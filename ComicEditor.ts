@@ -347,6 +347,100 @@ class ComicEditor {
             }
         })
     }
+	
+	    addrating(req, res) {
+        // Get our form values
+
+        var rateselection = Number(req.body.rating);
+        var username = req.session.passport.user;
+        username = String(username);
+        var accounts = globalDB.get('accounts');
+        var comicId = req.body.comicid;
+        var comicIdString = String(req.body.comicid);
+        globalCollection.findOne({_id: comicId}, {}, function (err, comic) {
+            if (err) {
+                res.send("Cannot find comic: " + err)
+            } else {
+                accounts.findOne({username: username}, {}, function (err, user) {
+                    if (err) {
+                        res.send("Cannot find user: " + err)
+                    } else {
+
+
+                        var oldrating = Number(req.body.oldrating);
+                        if (oldrating === 0) {
+                            var newsumallscores = Number(comic.rating.sumallscores) + rateselection;
+                            var newnumbervotes = Number(comic.rating.numbervotes) + 1;
+                            var newscore = newsumallscores / newnumbervotes;
+                            comic.rating = {
+                                score: newscore,
+                                sumallscores: newsumallscores,
+                                numbervotes: newnumbervotes
+                            }
+                        }
+                        if (oldrating !== rateselection && oldrating !== 0) {
+                            var newsumallscores = Number(comic.rating.sumallscores) + rateselection - oldrating;
+                            var newnumbervotes = Number(comic.rating.numbervotes);
+                            var newscore = newsumallscores / newnumbervotes;
+                            comic.rating = {
+                                score: newscore,
+                                sumallscores: newsumallscores,
+                                numbervotes: newnumbervotes
+                            }
+                        }
+                        if (oldrating === rateselection) {
+                            console.log(comic.rating);
+                            var newsumallscores = Number(comic.rating.sumallscores);
+                            newsumallscores = newsumallscores - oldrating;
+                            var newnumbervotes = Number(comic.rating.numbervotes);
+                            var newnumbervotes = newnumbervotes - 1;
+                            if (newnumbervotes === 0 ) {var newscore = 0;}
+                            else {var newscore = newsumallscores / newnumbervotes;}
+                            comic.rating = {
+                                score: newscore,
+                                sumallscores: newsumallscores,
+                                numbervotes: newnumbervotes
+                            }
+                        }
+                        var i = 0;
+                        var alreadyrated = false;
+                        if(user.ratings.length !==0 ) { console.log("im in if!");
+                            for (i = 0; i < user.ratings.length; i++) {
+                                if (String(user.ratings[i]._id) === comicIdString) {
+                                    if (oldrating === rateselection) {
+                                        user.ratings[i] = {_id: comicId, score: 0}
+                                    }
+                                    else {
+                                        user.ratings[i] = {_id: comicId, score: rateselection}
+                                    }
+                                    alreadyrated = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (!alreadyrated) {
+                            console.log("im in second if!")
+                            user.ratings.push({_id: comicId, score: rateselection});
+                        }
+
+                        globalCollection.update({_id: comicId}, comic, function (err, comic) {
+                            if (err) {
+                                res.send("Unable to add score to comic: " + err)
+                            } else {
+                                accounts.update({username: username}, user, function (err, user) {
+                                    if (err) {
+                                        res.send("Unable to add score to user: " + err)
+                                    } else {
+                                        res.redirect('/')
+                                    }
+                                })
+                            }
+                        })
+                    }
+                })
+            }
+        });
+    }
 
 
 }

@@ -104,6 +104,14 @@ class Router {
                 }
             });
         });
+		
+		//POST for addrating
+        router.post('/addrating', function(req, res) {
+            var user = String(req.session.passport.user);
+            if(user != "undefined") {
+                editor.addrating(req, res)
+            }
+        });
 
         /* GET reading list page
          * @param - username

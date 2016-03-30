@@ -24,3 +24,93 @@ block content
                             ) Options
                         .row(align='center')
                             .panel-body <a href="/view/#{comic._id}"><img height="25%" src="#{comic.panels[0].source}"></img></a>
+                        .row(align='center')
+                            -var alreadyrated = function(user){
+                            - if(user === undefined) {return 0;}
+                            - var i = 0;
+                            - var ratings = user.ratings;
+                            - var comicid = String(comic._id);
+                            - for(i = 0; i<ratings.length ; i++){
+                            -   if (ratings.length !== 0) {
+                            -       var ratingid = String(ratings[i]._id)
+                            -       if(ratingid === comicid){
+                            -       return ratings[i].score;
+                            -       }
+                            -    }
+                            -   }
+                            - return 0;
+                            - }
+                            -var rated = alreadyrated(user);
+                            if user != undefined
+                                if rated >= 0.5
+                                    .col-md-1
+                                        form#RatingOne( method="post", action="/addrating")
+                                            input(type='hidden', name='comicid', value=comic._id)
+                                            input(type='hidden', name='oldrating', value=rated)
+                                            input(type='hidden', name='rating', value=1)
+                                            button(class = "glyphicon glyphicon-star")
+                                else
+                                    .col-md-1
+                                        form#RatingOne( method="post", action="/addrating")
+                                            input(type='hidden', name='comicid', value=comic._id)
+                                            input(type='hidden', name='oldrating', value=rated)
+                                            input(type='hidden', name='rating', value=1)
+                                            button(class = "glyphicon glyphicon-star-empty")
+                                if rated >= 1.5
+                                    .col-md-1
+                                        form#RatingTwo( method="post", action="/addrating")
+                                            input(type='hidden', name='comicid', value=comic._id)
+                                            input(type='hidden', name='oldrating', value=rated)
+                                            input(type='hidden', name='rating', value=2)
+                                            button(class = "glyphicon glyphicon-star")
+                                else
+                                    .col-md-1
+                                        form#RatingTwo( method="post", action="/addrating")
+                                            input(type='hidden', name='comicid', value=comic._id)
+                                            input(type='hidden', name='oldrating', value=rated)
+                                            input(type='hidden', name='rating', value=2)
+                                            button(class = "glyphicon glyphicon-star-empty")
+                                if rated >= 2.5
+                                    .col-md-1
+                                        form#RatingThree( method="post", action="/addrating")
+                                            input(type='hidden', name='comicid', value=comic._id)
+                                            input(type='hidden', name='oldrating', value=rated)
+                                            input(type='hidden', name='rating', value=3)
+                                            button(class = "glyphicon glyphicon-star")
+                                else
+                                    .col-md-1
+                                        form#RatingThree( method="post", action="/addrating")
+                                            input(type='hidden', name='comicid', value=comic._id)
+                                            input(type='hidden', name='oldrating', value=rated)
+                                            input(type='hidden', name='rating', value=3)
+                                            button(class = "glyphicon glyphicon-star-empty")
+                                if rated >= 3.5
+                                    .col-md-1
+                                        form#RatingFour( method="post", action="/addrating")
+                                            input(type='hidden', name='comicid', value=comic._id)
+                                            input(type='hidden', name='oldrating', value=rated)
+                                            input(type='hidden', name='rating', value=4)
+                                            button(class = "glyphicon glyphicon-star")
+                                else
+                                    .col-md-1
+                                        form#RatingFour( method="post", action="/addrating")
+                                            input(type='hidden', name='comicid', value=comic._id)
+                                            input(type='hidden', name='oldrating', value=rated)
+                                            input(type='hidden', name='rating', value=4)
+                                            button(class = "glyphicon glyphicon-star-empty")
+                                if rated >= 4.5
+                                    .col-md-1
+                                        form#RatingFive( method="post", action="/addrating")
+                                            input(type='hidden', name='comicid', value=comic._id)
+                                            input(type='hidden', name='oldrating', value=rated)
+                                            input(type='hidden', name='rating', value=5)
+                                            button(class = "glyphicon glyphicon-star")
+                                else
+                                    .col-md-1
+                                        form#RatingFive( method="post", action="/addrating")
+                                            input(type='hidden', name='comicid', value=comic._id)
+                                            input(type='hidden', name='oldrating', value=rated)
+                                            input(type='hidden', name='rating', value=5)
+                                            button(class = "glyphicon glyphicon-star-empty")
+                                .col-md-2
+                                    h5 Community Rating: #{comic.rating.score.toFixed(1)}
