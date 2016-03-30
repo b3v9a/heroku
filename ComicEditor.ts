@@ -87,6 +87,7 @@ class ComicEditor {
         var commentText = req.body.comment;
         //var userId = req.body.userId;
         var username = req.session.passport.user;
+        username = String(username);
         var comicId = req.body.comicId;
         console.log(comicId);
 

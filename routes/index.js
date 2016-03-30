@@ -584,7 +584,7 @@ var Router = (function () {
         });
         /* POST Register */
         router.post('/register', function (req, res, next) {
-            Account.register(new Account({ username: req.body.username, email: req.body.email }), req.body.password, function (err, account) {
+            Account.register(new Account({ firstname: req.body.firstname, email: req.body.email, username: req.body.username }), req.body.password, function (err, account) {
                 if (err) {
                     return res.render("register", { info: "Sorry. That username already exists. Try again." });
                 }
@@ -622,6 +622,16 @@ var Router = (function () {
                 res.redirect('/');
             });
         });
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+        /* GET Account */
+        router.get('/account', function (req, res) {
+            res.render('account', { user: req.user, message: req.flash('error') });
+        });
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+
         /* GET Account page FIXING.
          * @param username (as exists in the database)
          * */

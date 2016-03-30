@@ -75,7 +75,8 @@ var ComicEditor = (function () {
     ComicEditor.prototype.addComment = function (req, res) {
         // Get our form values
         var commentText = req.body.comment;
-        //var userId = req.body.userId;
+        var username = req.session.passport.user;
+        username = String(username);
         var comicId = req.body.comicId;
         console.log(comicId);
         globalCollection.findOne({ _id: comicId }, {}, function (err, comic) {

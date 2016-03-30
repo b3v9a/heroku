@@ -18,16 +18,17 @@ block content
                                         .col-md-8
                                             h4 #{comic.comicTitle}
                                         .col-md-1
-                                            div(style="padding-top: 10px")
-                                            button(
-                                            type="button"
-                                            class="btn btn-xs"
-                                            data-toggle="popoverComic"
-                                            title="Additional Options"
-                                            data-image='/images/reading-list.jpg'
-                                            data-comicid="#{comic._id}"
-                                            data-username="name"
-                                            ) Options
+                                            if (user)
+                                                div(style="padding-top: 10px")
+                                                button(
+                                                type="button"
+                                                class="btn btn-xs"
+                                                data-toggle="popoverComic"
+                                                title="Additional Options"
+                                                data-image='/images/reading-list.jpg'
+                                                data-comicid="#{comic._id}"
+                                                data-username="name"
+                                                ) Options
                                         .row(align='center')
                                             if user == undefined
                                                 .panel-body <a href="/register"><img height="25%" src="#{comic.panels[0].source}"></img></a>
