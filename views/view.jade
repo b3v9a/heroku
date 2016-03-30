@@ -8,14 +8,35 @@ block content
         .col-md-8
             h2#top(style='font-size:300%;') #{comic.comicTitle} Comic!
                 br.
-                each panel in panels
-                    <br><img src="#{panel.source}"></img>
+                each panel, i in panels
+                    .row(align='left')
+                        -var num = i;
+                        if i == 0
+                            .col-md-8
+                                <a href="##{num}" class="glyphicon glyphicon-chevron-left"></a>
+                            <a href="##{num + 1}" class="glyphicon glyphicon-chevron-right"></a>
+                            div(id=num)
+                                <img src="#{panel.source}"></img>
+                        else if i == panels.length-1
+                            .col-md-8
+                                <a href="##{num - 1}" class="glyphicon glyphicon-chevron-left"></a>
+                            <a href="##{num}" class="glyphicon glyphicon-chevron-right"></a>
+                            div(id=num)
+                                <img src="#{panel.source}"></img>
+                        else
+                            .col-md-8
+                                <a href="##{num - 1}" class="glyphicon glyphicon-chevron-left"></a>
+                            <a href="##{num+1}" class="glyphicon glyphicon-chevron-right"></a>
+                            div(id=num)
+                                <img src="#{panel.source}"></img>
         .col.md-4
             h1.text-center.comment-title Comments
                 .row
                     if comments != undefined
                         each comment in comments
-                            -var alreadyupvoted = function(upvotes){
+                            -var alreadyupvoted = function(user){
+                            - if(user === null) {return 0;}
+                            - var upvotes = user.upvotes;
                             - var i = 0;
                             - for(i = 0; i<upvotes.length ; i++){
                             -   if (upvotes.length !== 0) {
@@ -31,7 +52,7 @@ block content
                                 h4 #{comment.text} --  Score: #{comment.score}
                                 h6 <a href="/community/#{comment.username}">#{comment.username}</a>
                             .col-md-1
-                                - var voted = alreadyupvoted(user.upvotes);
+                                - var voted = alreadyupvoted(user);
                                 if voted == 1
                                     form#forUpvote( method="post", action="/view/changescore")
                                         input(type='hidden',name='delta',value= -1)
@@ -47,11 +68,13 @@ block content
                                         input(type='hidden',name='buttonval',value= 1)
                                         input(type='hidden', name='comicid', value=comic._id)
                                         button(class='btn btn-primary btn-xs', type='submit') Λ
-                                if comment.username == user.username
-                                    form#fordeleteComment( method="post", action="/view/deletecomment")
-                                        input(type='hidden',name='commentid',value=comment._id)
-                                        input(type='hidden', name='comicid', value=comic._id)
-                                        button(class='btn btn-primary btn-xs', type='submit') x
+                                if user != null
+                                    if comment != null
+                                        if comment.username == user.username
+                                            form#fordeleteComment( method="post", action="/view/deletecomment")
+                                                input(type='hidden',name='commentid',value=comment._id)
+                                                input(type='hidden', name='comicid', value=comic._id)
+                                                button(class='btn btn-primary btn-xs', type='submit') x
                                 if voted == -1
                                     form#forDownvote( method="post", action="/view/changescore")
                                         input(type='hidden',name='delta',value= 1)
@@ -66,11 +89,12 @@ block content
                                         input(type='hidden',name='commentid',value=comment._id)
                                         input(type='hidden', name='comicid', value=comic._id)
                                         button(class='btn btn-primary btn-xs', type='submit') V
-                    .col-md-4
-                        -var comicId = comic._id
-                        form#forAddComment( method="post", action="/view/#{comic._id}/addcomment")
-                            input(type='text', name='comment', class='form-control input-sm', placeholder='comment',required,autofocus)
-                            input(type='hidden', name='comicId', value=comicId)
-                            button(class='btn btn-xs btn-primary btn-block', type='submit') Comment
+                    if user != null
+                        .col-md-4
+                            -var comicId = comic._id
+                            form#forAddComment( method="post", action="/view/#{comic._id}/addcomment")
+                                input(type='text', name='comment', class='form-control input-sm', placeholder='comment',required,autofocus)
+                                input(type='hidden', name='comicId', value=comicId)
+                                button(class='btn btn-xs btn-primary btn-block', type='submit') Comment
     .row(align='center')
         a(href='#top') Go to top
