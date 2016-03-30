@@ -1,0 +1,53 @@
+extends layout
+
+block content
+	.page-header
+		h1 ADMIN TOOLS
+	.row
+		h2 administrators
+		each account, i in accounts
+			if account.access == "administrator"
+				.col-md-4.col-sm-6.col-xs-12e}	
+					.panel.panel-default
+						h5 #{account.username}
+						.form-group
+							form(role='form', action="/admin/#{account.username}/makecontributor", method="post")
+								button.btn.btn-success(type='submit') Demote to Contributor
+						.form-group
+							form(role='form', action="/admin/#{account.username}/makeviewer", method="post")
+								button.btn.btn-warning(type='submit') Demote to Viewer
+						.form-group
+							form(role='form', action="/admin/#{account.username}/delete", method="post")
+								button.btn.btn-danger(type='submit') Delete Account
+	.row
+		h2 contributors
+		each account, i in accounts
+			if account.access == "contributor"
+				.col-md-4.col-sm-6.col-xs-12e}	
+					.panel.panel-default
+						h5 #{account.username}
+						.form-group
+							form(role='form', action="/admin/#{account.username}/makeadmin", method="post")
+								button.btn.btn-success(type='submit') Promote to Admin
+						.form-group
+							form(role='form', action="/admin/#{account.username}/makeviewer", method="post")
+								button.btn.btn-warning(type='submit') Demote to Viewer
+						.form-group
+							form(role='form', action="/admin/#{account.username}/delete", method="post")
+								button.btn.btn-danger(type='submit') Delete Account
+	.row
+		h2 viewers
+		each account, i in accounts
+			if account.access == ""
+				.col-md-4.col-sm-6.col-xs-12e}	
+					.panel.panel-default
+						h5 #{account.username}
+						.form-group
+							form(role='form', action="/admin/#{account.username}/makeadmin", method="post")
+								button.btn.btn-success(type='submit') Promote to Admin
+						.form-group
+							form(role='form', action="/admin/#{account.username}/makecontributor", method="post")
+								button.btn.btn-warning(type='submit') Promote to Contributor
+						.form-group
+							form(role='form', action="/admin/#{account.username}/delete", method="post")
+								button.btn.btn-danger(type='submit') Delete Account

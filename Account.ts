@@ -10,6 +10,7 @@ var Account = new Schema({
     email: String,
     username: String,
     password: String,
+    access: String,
     readingList: [],
     upvotes: [],
     ratings: []

@@ -584,7 +584,7 @@ var Router = (function () {
         });
         /* POST Register */
         router.post('/register', function (req, res, next) {
-            Account.register(new Account({ firstname: req.body.firstname, email: req.body.email, username: req.body.username }), req.body.password, function (err, account) {
+            Account.register(new Account({ firstname: req.body.firstname, email: req.body.email, username: req.body.username, access: "" }), req.body.password, function (err, account) {
                 if (err) {
                     return res.render("register", { info: "Sorry. That username already exists. Try again." });
                 }
@@ -623,14 +623,10 @@ var Router = (function () {
             });
         });
 
-////////////////////////////////////////////////////////////////////////////////////////////////
-
         /* GET Account */
         router.get('/account', function (req, res) {
             res.render('account', { user: req.user, message: req.flash('error') });
         });
-
-////////////////////////////////////////////////////////////////////////////////////////////////
 
         /* GET Account page FIXING.
          * @param username (as exists in the database)
@@ -682,6 +678,96 @@ var Router = (function () {
                 }
             });
         });
+
+        /* GET Admin */
+        router.get('/admin', function(req, res) {
+            var collection = db.get('accounts');
+            collection.find({}, {}, function (err, accounts) {
+                if (err) {
+                    res.send("error when finding accounts");
+                }
+                else {
+                    res.render('admin', {
+                        "accounts": accounts
+                    });
+                };
+            });
+        });
+
+        /* POST Admin:MakeAdmin */
+        router.post('/admin/:username/makeadmin', function (req, res) {
+            var ObjectID = require('mongodb').ObjectID;
+            var collection = db.get('accounts');
+            var user = req.params.username;
+
+            collection.update({ username: user }, { $set: {
+                "access": "administrator"
+            }
+            }, function (err, doc) {
+                if (err) {
+                    res.send("There was a problem updating user info to the database.");
+                }
+                else {
+                }
+                    res.redirect('/admin');
+                });
+        });
+
+        /* POST Admin:MakeContributor */
+        router.post('/admin/:username/makecontributor', function (req, res) {
+            var ObjectID = require('mongodb').ObjectID;
+            var collection = db.get('accounts');
+            var user = req.params.username;
+
+            collection.update({ username: user }, { $set: {
+                "access": "contributor"
+            }
+            }, function (err, doc) {
+                if (err) {
+                    res.send("There was a problem updating user info to the database.");
+                }
+                else {
+                }
+                    res.redirect('/admin');
+                });
+        });
+
+        /* POST Admin:MakeViewer */
+        router.post('/admin/:username/makeviewer', function (req, res) {
+            var ObjectID = require('mongodb').ObjectID;
+            var collection = db.get('accounts');
+            var user = req.params.username;
+
+            collection.update({ username: user }, { $set: {
+                "access": ""
+            }
+            }, function (err, doc) {
+                if (err) {
+                    res.send("There was a problem updating user info to the database.");
+                }
+                else {
+                }
+                    res.redirect('/admin');
+                });
+        });
+
+        /* POST Admin:Delete */
+        router.post('/admin/:username/delete', function (req, res) {
+            var ObjectID = require('mongodb').ObjectID;
+            var collection = db.get('accounts');
+            var user = req.params.username;
+
+            collection.remove({ username: user 
+            }, function (err, doc) {
+                if (err) {
+                    res.send("There was a problem updating user info to the database.");
+                }
+                else {
+                }
+                    res.redirect('/admin');
+                });
+        });
+
         /* GET View Page */
         router.get('/view/:id', function (req, res) {
             var comicCollection = db.get('comiccollection');

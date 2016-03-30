@@ -2,8 +2,9 @@ extends layout
 
 block content
     .row
-        form#editButton( method="post", action="/comics/#{comic._id}/view/all")
-            button(class='btn btn-xs btn-primary', type='submit', style='font-size:150%; float: right') Edit Comic
+        if (user && user.access != "")
+            form#editButton( method="post", action="/comics/#{comic._id}/view/all")
+                button(class='btn btn-xs btn-primary', type='submit', style='font-size:150%; float: right') Edit Comic
     .row(align='center')
         .col-md-8
             h2#top(style='font-size:300%;') #{comic.comicTitle} Comic!
