@@ -102,12 +102,45 @@ class ComicViewer {
                     "message": "No results found, please try again"
                 })
             } else {
-                    res.render('search',{
+                var username = String(req.session.passport.user);
+                if (username === 'undefined') {
+                    res.render('search', {
                         "query": true,
                         "result": true,
-                        "results" : comics
+                        "results": comics
                     });
-                // res(comics);
+                } else {
+                    // begin terrible code to get reading list of currently logged in user
+                    var usercollection = globalDB.get('accounts');
+                    usercollection.findOne({username: username}, {}, function(error, account) {
+                        if (error) {
+                            res.send("Unable to locate account");
+                        } else {
+                            // get reading list
+                            var readinglist = account.readingList;
+                            // var ObjectID = require('mongodb').ObjectID;
+                            //
+                            // // coerce type to match DB objects
+                            // for (var i = 0; i < account.readingList.length; i++) {
+                            //     readinglist[i] = ObjectID(readinglist[i]);
+                            // }
+
+                            for (var i = 0; i < comics.length; i++) {
+                                // set message to show next to the Reading List icon
+                                if (readinglist.indexOf(String(comics[i]._id)) === -1) {
+                                    comics[i].inReadingList = false;
+                                } else {
+                                    comics[i].inReadingList = true
+                                }
+                                res.render('search', {
+                                    "query": true,
+                                    "result": true,
+                                    "results": comics
+                                });
+                            }
+                        }
+                    })
+                }
             }
         })
     }

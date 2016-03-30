@@ -16,7 +16,7 @@ html
     meta( name='description', content='Baking Bootstrap Snippets with Jade' )
 
     //- Bootswatch Theme
-    link(href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.6/flatly/bootstrap.min.css", rel="stylesheet")
+    link(href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.6/cyborg/bootstrap.min.css", rel="stylesheet")
 
 
   body
@@ -31,12 +31,21 @@ html
           html: true,
           trigger: 'click',
           content: function() {
+            var restURL;
+            var message;
+            if ($(this).data('inlist') === true) {
+              restURL = '/readinglist/remove';
+              message = 'Remove from Reading List'
+            } else {
+              restURL = '/readinglist/add';
+              message = 'Add to Reading List'
+            }
             return (
-              "<form method='post' action='/readinglist/add'>" +
+              "<form method='post' action=" + restURL + ">" +
               "<input type='hidden' name='username' value=" + $(this).data('username') + ">" +
               "<input type='hidden' name='comicid' value=" + $(this).data('comicid') + ">" +
-              "<input type='image' src='" + $(this).data('image') + "' alt='Add to Reading List'" +
-              "/></form>"
+              "<input type='image' src='" + $(this).data('image') + "' alt='" + message +
+              "'/></form>" + "<h6>" + message + "</h6>"
             )
           }
           //content: function () {
@@ -61,14 +70,12 @@ html
       #navbar-inverse.collapse.navbar-collapse
         ul.nav.navbar-nav.navbar-left
           li: a( href="/search") Search
-          li: a( href="/comics/drafts") Drafts
           li: a( href="/comics/addcomic") Add Comic
           li: a( href="/register") Register
-          li: a( href="/readinglist") Reading List          
         if (!user)
           ul.nav.pull-right
             li.dropdown
-              a.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-expanded="false" ) Login 
+              a.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-expanded="false" ) Login
                 span.caret
               ul.dropdown-menu( role="menu" )
                 form(role='form', action="/login", method="post", style='max-width: 300px;')
@@ -80,10 +87,11 @@ html
         if (user)
           ul.nav.pull-right
             li.dropdown
-              a.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-expanded="false" ) Welcome #{user.username}!
+              a.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-expanded="false" ) Welcome #{user.firstname}!
                 span.caret
               ul.dropdown-menu( role="menu" )
-                li: a( href="/account/:username") Account
+                li: a( href="/account") Account
                 li: a( href="/readinglist") Reading List
+                li: a( href="/comics/drafts") Drafts
                 li: a( href="/logout") Logout
   block content

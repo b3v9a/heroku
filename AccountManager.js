@@ -5,7 +5,7 @@
 ///<reference path='DBManager.ts'/>
 var globalMonk = require('monk');
 var globalDB = globalMonk('mongodb://admin:sloth@ds051635.mongolab.com:51635/sloth310');
-var globalCollection = globalDB.get('usercollection');
+var globalCollection = globalDB.get('accounts');
 var AccountManager = (function () {
     function AccountManager() {
     }
@@ -14,7 +14,7 @@ var AccountManager = (function () {
         this.vieweruser = require('./ViewerUser');
         var monk = require('monk');
         var db = monk('mongodb://admin:sloth@ds051635.mongolab.com:51635/sloth310');
-        this.userCollection = db.get('usercollection');
+        this.userCollection = db.get('accounts');
         // TODO figure out how to hook this up to DBManager
         //this.dbmanager = require('./DBManager');
         //this.userCollection = this.dbmanager.userCollection;

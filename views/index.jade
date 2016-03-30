@@ -17,19 +17,21 @@ block content
                                         div(style="padding-left: 10px")
                                             .col-md-8
                                                 h4 #{comic.comicTitle}
-                                            .col-md-1
-                                                div(style="padding-top: 10px")
-                                                button(
-                                                type="button"
-                                                class="btn btn-xs"
-                                                data-toggle="popoverComic"
-                                                title="Additional Options"
-                                                data-image='/images/reading-list.jpg'
-                                                data-comicid="#{comic._id}"
-                                                data-username="name"
-                                                ) Options
-                                            .row(align='center')
-                                                .panel-body <a href="/view/#{comic._id}"><img height="25%" src="#{comic.panels[0].source}"></img></a>
+                                            if (user)
+                                                .col-md-1
+                                                    div(style="padding-top: 10px")
+                                                    button(
+                                                    type="button"
+                                                    class="btn btn-xs"
+                                                    data-toggle="popoverComic"
+                                                    title="Additional Options"
+                                                    data-image='/images/reading-list.jpg'
+                                                    data-inlist="#{comic.inReadingList}"
+                                                    data-comicid="#{comic._id}"
+                                                    data-username="name"
+                                                    ) Options
+                                                .row(align='center')
+                                            .panel-body <a href="/view/#{comic._id}"><img height="25%" src="#{comic.panels[0].source}"></img></a>
                             else
             .row
                 if (numComics > 4)

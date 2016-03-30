@@ -84,7 +84,7 @@ var Application = (function () {
         module.exports = app;
     };
     return Application;
-})();
+}());
 var app = new Application();
 app.start();
 //# sourceMappingURL=app.js.map

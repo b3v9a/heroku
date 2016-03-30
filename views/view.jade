@@ -1,11 +1,13 @@
 extends layout
 
 block content
+    .row
+        form#editButton( method="post", action="/comics/#{comic._id}/view/all")
+            button(class='btn btn-xs btn-primary', type='submit', style='font-size:150%; float: right') Edit Comic
     .row(align='center')
         .col-md-8
-            h2#top #{comic.comicTitle} Comic!
+            h2#top(style='font-size:300%;') #{comic.comicTitle} Comic!
                 br.
-                <a href="/comics/#{comic._id}/view/all">EDIT PANEL</a>
                 each panel in panels
                     <br><img src="#{panel.source}"></img>
         .col.md-4
@@ -27,7 +29,7 @@ block content
                             div(style="width: 100%")
                             .col-md-3
                                 h4 #{comment.text} --  Score: #{comment.score}
-                                //<a href="/community/#{comment.username}">#{comment.username}</a>
+                                <a href="/community/#{comment.username}">#{comment.username}</a>
                             .col-md-1
                                 - var voted = alreadyupvoted(upvotes);
                                 if voted == 1

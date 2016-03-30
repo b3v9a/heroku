@@ -5,14 +5,24 @@ block content
         h1 Reading List
     .container
         .panel.panel-default
-            each comic, i in readingList
-                .panel-body
-                    .col-md-2
-                        <a href="/view/#{comic._id}"><img height="25%" src="#{comic.panels[0].source}"></img></a>
-                    .col-md-8.col-md-offset-0
-                        .row
-                            h3 <a href="/view/#{comic._id}">#{comic.comicTitle}</a>
-                            h4 #{comic.description} <-- (this is the description)
-                            br
-                            h5 Categories: #{comic.comicCategory} <-- (these are the categories)
-                            h5 Uploaded: #{comic.date} <-- (this should show a date)
+            if (user)
+                each comic, i in readingList
+                    .panel-body
+                        .col-md-2
+                            <a href="/view/#{comic._id}"><img height="25%" src="#{comic.panels[0].source}"></img></a>
+                        .col-md-8
+                            .row
+                                h3 <a href="/view/#{comic._id}">#{comic.comicTitle}</a>
+                                h4 Description: #{comic.description}
+                                h5 Category: #{comic.comicCategory}
+                                h5 Uploaded: #{comic.uploadDate}
+                        .col-md-1
+                            form(method="post" action="readinglist/remove")
+                                div(style="padding-top: 10px; padding-left:140px")
+                                    input(type='hidden' name='username' value="name")
+                                    input(type='hidden' name='comicid' value="#{comic._id}")
+                                    button(
+                                    type="submit"
+                                    class="btn btn-xs"
+                                    title="Remove from Reading List"
+                                    ) X

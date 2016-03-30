@@ -38,60 +38,103 @@ var Router = (function () {
             // initialize local list of categories
             // TODO store this in its own database collection and maintain # of comics using a given category
             var categories = defaultCategories;
-            var collection = db.get('comiccollection');
-            collection.find({ publish: true }, {}, function (e, comics) {
-                // determine which categories have active comics so only those are shown to the user
-                for (var i = 0; i < comics.length; i++) {
-                    var comicCategory = comics[i].comicCategory;
-                    for (var j = 0; j < categories.length; j++) {
-                        if (categories[j].name === comicCategory) {
-                            categories[j].active = true;
+            var comicCollection = db.get('comiccollection');
+            var username = req.session.passport.user;
+            comicCollection.find({ publish: true }, {}, function (e, comics) {
+                var userCollection = db.get('accounts');
+                if (String(username) === 'undefined') {
+                    // if not logged in, we simply return the list of comics and active categories
+                    for (var i = 0; i < comics.length; i++) {
+                        // determine whether comics are on reading list or not
+                        var comicCategory = comics[i].comicCategory;
+                        for (var j = 0; j < categories.length; j++) {
+                            if (categories[j].name === comicCategory) {
+                                categories[j].active = true;
+                            }
                         }
                     }
+                    res.render('index', {
+                        "comics": comics,
+                        "categories": categories
+                    });
                 }
-                res.render('index', {
-                    "comics": comics,
-                    "categories": categories
-                });
+                else {
+                    // if user *is* logged in, we also return what is in their reading list
+                    userCollection.findOne({ username: username }, {}, function (err, account) {
+                        var readingList = account.readingList;
+                        for (var i = 0; i < readingList.length; i++) {
+                            readingList[i] = String(readingList[i]);
+                        }
+                        // determine which categories have active comics so only those are shown to the user
+                        for (var i = 0; i < comics.length; i++) {
+                            // set message to show next to the Reading List icon
+                            if (readingList.indexOf(String(comics[i]._id)) === -1) {
+                                comics[i].inReadingList = false;
+                            }
+                            else {
+                                comics[i].inReadingList = true;
+                            }
+                            // determine whether comics are on reading list or not
+                            var comicCategory = comics[i].comicCategory;
+                            for (var j = 0; j < categories.length; j++) {
+                                if (categories[j].name === comicCategory) {
+                                    categories[j].active = true;
+                                }
+                            }
+                        }
+                        res.render('index', {
+                            "comics": comics,
+                            "categories": categories
+                        });
+                    });
+                }
             });
         });
         /* GET reading list page
-        * @param - username
-        * */
+         * @param - username
+         * */
         router.get('/readinglist', function (req, res) {
-            var userCollection = db.get('usercollection');
-            // find the correct account for this user
-            // TODO update username to take a parameter given through authentication
-            userCollection.findOne({ username: "name" }, {}, function (e, account) {
-                var comicCollection = db.get('comiccollection');
-                var readinglist = account.readingList;
-                var ObjectID = require('mongodb').ObjectID;
-                for (var i = 0; i < account.readingList.length; i++) {
-                    readinglist[i] = ObjectID(readinglist[i]);
-                }
-                // find all the comics with IDs that match whatever is in the user's reading list
-                comicCollection.find({ _id: { $in: readinglist } }, {}, function (err, readingList) {
-                    if (err) {
-                        res.send(err);
-                    }
-                    else {
-                        res.render('readinglist', {
-                            "readingList": readingList
-                        });
-                    }
+            var userCollection = db.get('accounts');
+            var username = String(req.session.passport.user);
+            if (String(username) === 'undefined') {
+                res.render('readinglist', {
+                    "readingList": []
                 });
-            });
+            }
+            else {
+                // find the correct account for this user
+                userCollection.findOne({ username: username }, {}, function (e, account) {
+                    var comicCollection = db.get('comiccollection');
+                    var readinglist = account.readingList;
+                    var ObjectID = require('mongodb').ObjectID;
+                    for (var i = 0; i < account.readingList.length; i++) {
+                        readinglist[i] = ObjectID(readinglist[i]);
+                    }
+                    // find all the comics with IDs that match whatever is in the user's reading list
+                    comicCollection.find({ _id: { $in: readinglist } }, {}, function (err, readingList) {
+                        if (err) {
+                            res.send(err);
+                        }
+                        else {
+                            res.render('readinglist', {
+                                "readingList": readingList
+                            });
+                        }
+                    });
+                });
+            }
         });
         /* POST to add comic to reading list */
         router.post('/readinglist/add', function (req, res) {
-            var collection = db.get('usercollection');
-            collection.findOne({ username: req.body.username }, {}, function (e, account) {
+            var collection = db.get('accounts');
+            var username = String(req.session.passport.user);
+            collection.findOne({ username: username }, {}, function (e, account) {
                 var userAcct = account;
                 // Add comic to readingList only if not already present
                 if (userAcct.readingList.indexOf(req.body.comicid) === -1) {
                     userAcct.readingList.push(req.body.comicid);
                 }
-                collection.update({ username: req.body.username }, userAcct, function (err, result) {
+                collection.update({ username: username }, userAcct, function (err, result) {
                     if (err) {
                         res.send("Unable to add to reading list");
                     }
@@ -103,9 +146,36 @@ var Router = (function () {
                 });
             });
         });
+        /* POST to remove comic from reading list */
+        router.post('/readinglist/remove', function (req, res) {
+            var collection = db.get('accounts');
+            var username = String(req.session.passport.user);
+            collection.findOne({ username: username }, {}, function (e, account) {
+                var userAcct = account;
+                var indexToRemove;
+                for (var i = 0; i < userAcct.readingList.length; i++) {
+                    if (userAcct.readingList[i] === req.body.comicid) {
+                        indexToRemove = i;
+                        break;
+                    }
+                }
+                // remove the specified comic from the reading list
+                userAcct.readingList.splice(indexToRemove, 1);
+                collection.update({ username: username }, userAcct, function (err, result) {
+                    if (err) {
+                        res.send("Unable to remove from reading list");
+                    }
+                    else {
+                        // redirect to main browse page
+                        // TODO redirect to reading list page?
+                        res.redirect('/');
+                    }
+                });
+            });
+        });
         /* GET Community page. */
         router.get('/community/:username', function (req, res) {
-            var collection = db.get('usercollection');
+            var collection = db.get('accounts');
             collection.findOne({ username: req.params.username }, {}, function (e, account) {
                 res.render('community', {
                     "account": account
@@ -115,7 +185,7 @@ var Router = (function () {
         /* GET Comic Draft page. */
         router.get('/comics/drafts', function (req, res) {
             var collection = db.get('comiccollection');
-            collection.find({ publish: false }, {}, function (e, docs) {
+            collection.find({ publish: false, uploader: req.session.passport.user }, {}, function (e, docs) {
                 res.render('comicDraft', {
                     "comics": docs
                 });
@@ -140,7 +210,6 @@ var Router = (function () {
             var description = req.body.description;
             var firstpanel = req.body.firstpanel;
             var panels = [];
-            console.log(comicCategory);
             collection.find({ "comicTitle": comicTitle }, {}, function (e, docs) {
                 if (e) {
                     res.send("find error");
@@ -155,6 +224,9 @@ var Router = (function () {
                     if (!((firstpanel.match(".png" + "$") == ".png") || (firstpanel.match(".jpg" + "$") == ".jpg"))) {
                         res.send("URL does not end with .png or .jpg");
                     }
+                    else if (String(req.session.passport.user) === 'undefined') {
+                        res.send("User is not logged in");
+                    }
                     else {
                         var randomizedId = Math.floor((Math.random() * 10000));
                         collection.insert({
@@ -163,6 +235,9 @@ var Router = (function () {
                             "comicSource": comicSource,
                             "description": description,
                             "publish": false,
+                            "uploader": req.session.passport.user,
+                            "uploadDate": new Date(),
+                            "modifiedDate": new Date(),
                             "panels": [{
                                     "_id": randomizedId,
                                     "source": firstpanel,
@@ -257,6 +332,30 @@ var Router = (function () {
                         else {
                         }
                         res.redirect("/view/" + comicID);
+                    });
+                }
+            });
+        });
+        /* POST to Edit Button.
+         * @param comicId - the ID of the comic which the panel should be added to
+         * */
+        router.post('/comics/:id/view/all', function (req, res) {
+            var ObjectID = require('mongodb').ObjectID;
+            var comicID = ObjectID(req.params.id);
+            var collection = db.get('comiccollection');
+            collection.findById(comicID, function (err, docs) {
+                if (err) {
+                    res("Cannot find comic: " + err);
+                }
+                else {
+                    collection.update({ _id: comicID }, { $set: { "modifiedDate": new Date() }
+                    }, function (err, doc) {
+                        if (err) {
+                            res.send("There was a problem hitting the edit button.");
+                        }
+                        else {
+                        }
+                        res.redirect("/comics/" + comicID + "/view/all");
                     });
                 }
             });
@@ -447,7 +546,7 @@ var Router = (function () {
         //get view apge
         router.get('/view/:id', function (req, res) {
             var collection = db.get('comiccollection');
-            var users = db.get('usercollection');
+            var users = db.get('accounts');
             collection.findOne({ _id: req.params.id }, {}, function (err, comic) {
                 if (err) {
                     res("Comic not found");
@@ -519,7 +618,7 @@ var Router = (function () {
          * @param username (as exists in the database)
          * */
         router.get('/account/:username', function (req, res) {
-            var collection = db.get('usercollection');
+            var collection = db.get('accounts');
             collection.find({}, {}, function (e, docs) {
                 res.render('account', {
                     "user": req.params.username,
@@ -530,7 +629,7 @@ var Router = (function () {
         /* POST to Account Page DONE. */
         router.post('/account/:username/edit', function (req, res) {
             var ObjectID = require('mongodb').ObjectID;
-            var collection = db.get('usercollection');
+            var collection = db.get('accounts');
             var user = req.params.username;
             var username = req.body.username;
             var email = req.body.email;
@@ -569,7 +668,7 @@ var Router = (function () {
         router.get('/view/:id', function (req, res) {
             var comicCollection = db.get('comiccollection');
             comicCollection.findOne({ _id: req.params.id }, {}, function (e, comic) {
-                var userCollection = db.get('usercollection');
+                var userCollection = db.get('accounts');
                 userCollection.find({}, {}, function (err, accounts) {
                     if (err) {
                         res.send("error when finding account");
@@ -596,7 +695,7 @@ var Router = (function () {
             var comicCollection = db.get('comiccollection');
             comicCollection.find({ $and: [{ comicCategory: category.name },
                     { publish: true }] }, {}, function (e, comics) {
-                // var userCollection = db.get('usercollection');
+                // var userCollection = db.get('accounts');
                 // userCollection.find({}, {}, function (err, accounts) {
                 //     if (err) {
                 //         res.send("error when finding account")
@@ -614,31 +713,14 @@ var Router = (function () {
         });
         /* GET Search Page */
         router.get('/search', function (req, res) {
-            // var collection = db.get('comiccollection');
-            // collection.find({}, {},  function(e, docs){
             res.render('search');
-            // });
         });
-        /* GET Search Results Page */
-        // router.get('/search/:category', function(req, res){
-        // var collection = db.get('comiccollection');
-        // collection.find({}, {},  function(e, docs){
-        //     res.render('results',{
-        //         "category" : req.params.category,
-        //         "comics" : docs
-        //     });
-        // });
-        // });
         router.post('/search', function (req, res) {
             viewer.searchMatchingComics(req, res);
-        });
-        router.get('/search', function (req, res) {
-            res.render('search');
         });
         module.exports = router;
     };
     return Router;
-})();
+}());
 var router = new Router();
 router.start();
-//# sourceMappingURL=index.js.map
