@@ -29,9 +29,9 @@ block content
                             div(style="width: 100%")
                             .col-md-3
                                 h4 #{comment.text} --  Score: #{comment.score}
-                                <a href="/community/#{comment.username}">#{comment.username}</a>
+                                h6 <a href="/community/#{comment.username}">#{comment.username}</a>
                             .col-md-1
-                                - var voted = alreadyupvoted(upvotes);
+                                - var voted = alreadyupvoted(user.upvotes);
                                 if voted == 1
                                     form#forUpvote( method="post", action="/view/changescore")
                                         input(type='hidden',name='delta',value= -1)
@@ -47,7 +47,7 @@ block content
                                         input(type='hidden',name='buttonval',value= 1)
                                         input(type='hidden', name='comicid', value=comic._id)
                                         button(class='btn btn-primary btn-xs', type='submit') Λ
-                                if comment.username == "name"
+                                if comment.username == user.username
                                     form#fordeleteComment( method="post", action="/view/deletecomment")
                                         input(type='hidden',name='commentid',value=comment._id)
                                         input(type='hidden', name='comicid', value=comic._id)

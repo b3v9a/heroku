@@ -8,7 +8,7 @@
 var globalMonk = require('monk');
 var globalDB = globalMonk('mongodb://admin:sloth@ds051635.mongolab.com:51635/sloth310');
 var globalCollection = globalDB.get('comiccollection');
-var users = globalDB.get('usercollection');
+var users = globalDB.get('accounts');
 
 class ComicEditor {
 
@@ -86,7 +86,7 @@ class ComicEditor {
         // Get our form values
         var commentText = req.body.comment;
         //var userId = req.body.userId;
-        var username = "name";
+        var username = req.session.passport.user;
         var comicId = req.body.comicId;
         console.log(comicId);
 
@@ -154,7 +154,6 @@ class ComicEditor {
     changeScore(req, res) {
 
         //var userId = req.body.userId;
-        var username = "test";
         var comicId = req.body.comicid;
 
         globalCollection.findOne({_id: comicId}, {}, function (err, comic) {
@@ -166,6 +165,8 @@ class ComicEditor {
                 var commentId = Number(req.body.commentid);
                 var buttonval = Number(req.body.buttonval);
                 var delta = Number(req.body.delta);
+                var username = req.session.passport.user;
+                username = String(username);
 
                 for (var i=0;i<comic.comments.length; i++) {
                     if(comic.comments[i]._id === commentId) {
@@ -178,7 +179,7 @@ class ComicEditor {
                         res.send("Unable to update score: " + err)
                     } else {
                         //CURRENTLY USERNAME IS NOT DYNAMIC
-                        users.findOne({username : "name"}, {}, function (err, user) {
+                        users.findOne({username : username}, {}, function (err, user) {
                             if (err) {
                                 res.send("Cannot find comic: " + err)
                             } else {
@@ -195,7 +196,7 @@ class ComicEditor {
                                         score: delta
                                     });
                                 }
-                                users.update({username: "name"}, user, {upsert : true}, function(err, result) {
+                                users.update({username: username}, user, function(err, result) {
                                     if (err) {
                                         res.send("Unable to update score: " + err)
                                     } else {

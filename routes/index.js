@@ -554,19 +554,20 @@ var Router = (function () {
         router.get('/view/:id', function (req, res) {
             var collection = db.get('comiccollection');
             var users = db.get('accounts');
+            var username = req.session.passport.user;
+            username = String(username);
             collection.findOne({ _id: req.params.id }, {}, function (err, comic) {
                 if (err) {
                     res("Comic not found");
                 }
                 else {
-                    users.findOne({ username: "name" }, {}, function (err, user) {
+                    users.findOne({ username: username }, {}, function (err, user) {
                         if (err) {
                             res("user not found");
                         }
                         else {
                             res.render('view', {
                                 "user": user,
-                                "upvotes": user.upvotes,
                                 "comic": comic,
                                 "comments": comic.comments.reverse(),
                                 "panels": comic.panels
