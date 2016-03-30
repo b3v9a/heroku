@@ -12,23 +12,21 @@ block content
                 each panel, i in panels
                     .row(align='left')
                         -var num = i;
-                        if i == 0
-                            .col-md-8
-                                <a href="##{num}" class="glyphicon glyphicon-chevron-left"></a>
-                            <a href="##{num + 1}" class="glyphicon glyphicon-chevron-right"></a>
-                            div(id=num)
+                        div(id=num)    
+                            if i == 0
+                                .col-md-8
+                                    <a href="##{num}" class="glyphicon glyphicon-chevron-left"></a>
+                                <a href="##{num + 1}" class="glyphicon glyphicon-chevron-right"></a>
                                 <img src="#{panel.source}"></img>
-                        else if i == panels.length-1
-                            .col-md-8
-                                <a href="##{num - 1}" class="glyphicon glyphicon-chevron-left"></a>
-                            <a href="##{num}" class="glyphicon glyphicon-chevron-right"></a>
-                            div(id=num)
+                            else if i == panels.length-1
+                                .col-md-8
+                                    <a href="##{num - 1}" class="glyphicon glyphicon-chevron-left"></a>
+                                <a href="##{num}" class="glyphicon glyphicon-chevron-right"></a>
                                 <img src="#{panel.source}"></img>
-                        else
-                            .col-md-8
-                                <a href="##{num - 1}" class="glyphicon glyphicon-chevron-left"></a>
-                            <a href="##{num+1}" class="glyphicon glyphicon-chevron-right"></a>
-                            div(id=num)
+                            else
+                                .col-md-8
+                                    <a href="##{num - 1}" class="glyphicon glyphicon-chevron-left"></a>
+                                <a href="##{num+1}" class="glyphicon glyphicon-chevron-right"></a>
                                 <img src="#{panel.source}"></img>
         .col.md-4
             h1.text-center.comment-title Comments
