@@ -783,7 +783,7 @@ class Router {
                             }
                             else {
                             }
-                            res.redirect('/account');
+                            res.redirect('/');
                         });
 
                 }
