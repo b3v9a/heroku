@@ -673,7 +673,7 @@ var Router = (function () {
                         }
                         else {
                         }
-                        res.redirect('/account/' + username);
+                        res.redirect('/account');
                     });
                 }
             });
